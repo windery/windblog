@@ -1,13 +1,10 @@
 #!venv/bin/python
 #-*- coding: utf-8 -*-
 
-import os, sys
+import os
 from app import create_app, db
 from flask.ext.script import Manager, Shell
 from flask.ext.migrate import Migrate, MigrateCommand
-
-#avaid pyc files
-sys.dont_write_bytecode = True
 
 app = create_app(os.getenv('BLOG_CONFIG') or 'default')
 manager = Manager(app)
