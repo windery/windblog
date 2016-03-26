@@ -1,6 +1,6 @@
 from flask.ext.wtf import Form
 from wtforms import IntegerField, StringField, PasswordField, SelectField, \
-     TextAreaField, SubmitField
+     TextAreaField, SubmitField, BooleanField
 from wtforms.validators import Required, Length, Email, Regexp, EqualTo, NumberRange
 from wtforms import ValidationError
 from ..models import User
@@ -20,7 +20,7 @@ class RegisterForm(Form):
     about_me = TextAreaField('About me', validators=[
         Length(-1, 600, '你这是写自传吧... 长话短说！')], \
         default='懒滴很，撒都莫有...')
-    submit = SubmitField('Register')
+    submit = SubmitField('注册')
     
     def validate_email(self, field):
         if User.query.filter_by(email=field.data).first():
@@ -29,3 +29,10 @@ class RegisterForm(Form):
     def validate_username(self, field):
         if User.query.filter_by(username=field.data).first():
             raise ValidationError
+
+class LoginForm(Form):
+    email = StringField('Email', validators=[Required(), Length(1, 64), Email()])
+    password = PasswordField('Password', validators=[Required()])
+    remember_me = BooleanField('remember_me')
+    submit = SubmitField('登陆')
+
