@@ -31,7 +31,7 @@ def register():
                     about_me=form.about_me.data)
         db.session.add(user)
         db.session.commit()
-        flash('Regestration completed. Now login in with the account you just registed.')
+        flash('恭喜注册成功！现在请使用刚才注册的用户登录！')
         return redirect(url_for('main.index'))
     return render_template('register.html', form=form)
 

@@ -33,6 +33,6 @@ class RegisterForm(Form):
 class LoginForm(Form):
     email = StringField('Email', validators=[Required(), Length(1, 64), Email()])
     password = PasswordField('Password', validators=[Required()])
-    remember_me = BooleanField('remember_me')
+    remember_me = BooleanField('记住我')
     submit = SubmitField('登陆')
 

@@ -10,6 +10,7 @@ app = create_app(os.getenv('BLOG_CONFIG') or 'default')
 manager = Manager(app)
 migrate = Migrate(app, db)
 
+#添加命令shell， 导入这些变量到shell环境
 def make_shell_context():
     return dict(app=app, db=db)
 
