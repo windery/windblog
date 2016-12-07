@@ -1,7 +1,7 @@
 from flask.ext.wtf import Form
 from wtforms import IntegerField, StringField, PasswordField, SelectField, \
      TextAreaField, SubmitField, BooleanField
-from wtforms.validators import Required, Length, Email, Regexp, EqualTo, NumberRange
+from wtforms.validators import Required, Length, Email, Regexp, EqualTo, NumberRange, DataRequired
 from wtforms import ValidationError
 
 
@@ -30,4 +30,12 @@ from wtforms import ValidationError
 #     def validate_username(self, field):
 #         if User.query.filter_by(username=field.data).first():
 #             raise ValidationError
+
+class PostForm(Form):
+    title = StringField('标题', validators=[DataRequired(), Length(1, 100)])
+    content = TextAreaField('内容', validators=[DataRequired()])
+    subject = StringField('主题', validators=[DataRequired()])
+    tags = StringField('标签')
+    submit = SubmitField('发布')
+
 
