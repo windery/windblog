@@ -1,4 +1,4 @@
-from flask.ext.wtf import Form
+from flask_wtf import FlaskForm
 from wtforms import IntegerField, StringField, PasswordField, SelectField, \
      TextAreaField, SubmitField, BooleanField
 from wtforms.validators import Required, Length, Email, Regexp, EqualTo, NumberRange, DataRequired
@@ -31,7 +31,7 @@ from wtforms import ValidationError
 #         if User.query.filter_by(username=field.data).first():
 #             raise ValidationError
 
-class PostForm(Form):
+class PostForm(FlaskForm):
     title = StringField('标题', validators=[DataRequired(), Length(1, 100)])
     content = TextAreaField('内容', validators=[DataRequired()])
     subject = StringField('主题', validators=[DataRequired()])
