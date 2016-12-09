@@ -8,7 +8,7 @@ class Config:
 
     SUBJECTS = (
         {'name': u'主页', 'route': '/home'},
-        {'name': u'技术', 'route': '/tecinque'},
+        {'name': u'技术', 'route': '/technique'},
         {'name': u'环境', 'route': '/environment'},
         {'name': u'资源', 'route': '/resources'},
         {'name': u'思考', 'route': '/thoughts'},
