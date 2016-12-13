@@ -48,7 +48,7 @@ def about():
     return render_blog_template('about.html')
 
 
-@blog.route('/edit', methods=['GET', 'POST'])
+@blog.route('/edit', methods=['Get', 'POST'])
 def edit():
     post_form = PostForm()
     if post_form.validate_on_submit():
@@ -60,6 +60,10 @@ def edit():
             create_time = int(time.time()),
             modify_time = int(time.time())
         )
+        print('title : ' + post_form.title.data)
+        print('subject : ' + post_form.subject.data)
+        print('content : ' + post_form.content.data)
+        print('tags : ' + post_form.tags.data)
         db.session.add(blog_post)
         db.session.commit()
         print("success ----------------------------------------------------")

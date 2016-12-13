@@ -7,13 +7,19 @@ class Config:
     SQLALCHEMY_TRACK_MODIFICATIONS = True
 
     SUBJECTS = (
-        {'name': u'主页', 'route': '/home'},
+#        {'name': u'主页', 'route': '/home'},
         {'name': u'技术', 'route': '/technique'},
         {'name': u'环境', 'route': '/environment'},
         {'name': u'资源', 'route': '/resources'},
-        {'name': u'思考', 'route': '/thoughts'},
-        {'name': u'关于', 'route': '/about'}
+        {'name': u'思考', 'route': '/thoughts'}
+#        {'name': u'关于', 'route': '/about'}
     )
+    SUBJECT_VALUES = [
+        ('technique', u'技术'),
+        ('environment', u'环境'),
+        ('resources', u'资源'),
+        ('thoughts', u'思考')
+    ]
 
     @staticmethod
     def init_app(app):
