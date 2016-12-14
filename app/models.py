@@ -1,8 +1,8 @@
 from . import db
 from config import Config
 
-class BlogPost(db.Model):
-    __tablename__ = 'blog_post'
+class Post(db.Model):
+    __tablename__ = 'post'
     id = db.Column(db.Integer, primary_key=True)
 #    subject = db.Column(db.String, db.ForeignKey('blog_subject.name'))
     subject = db.Column(db.String)
@@ -15,8 +15,8 @@ class BlogPost(db.Model):
 #    comment = db.relationship('BlogComment', foreign_keys=[], backref=db.backref('blog_post'))
 
 
-class BlogComment(db.Model):
-    __tablename__ = 'blog_comment'
+class Comment(db.Model):
+    __tablename__ = 'comment'
     id = db.Column(db.Integer, primary_key=True)
 #    post_id = db.Column(db.Integer, db.ForeighKey('blog_post.id'))
 #    post_id = db.Column(db.Integer)
@@ -28,8 +28,8 @@ class BlogComment(db.Model):
 #    parent = db.relationship('BlogComment', backref=db.backref('blog_comment'))
 
 
-class BlogSubject(db.Model):
-    __tablename__ = 'blog_subject'
+class Subject(db.Model):
+    __tablename__ = 'subject'
     name = db.Column(db.String, primary_key=True)
     route = db.Column(db.String, unique=True)
 
@@ -39,8 +39,8 @@ class BlogSubject(db.Model):
     def insert_subjects():
         subjects = Config.SUBJECTS
         for s in subjects:
-            subject = BlogSubject.query.filter_by(name=s['name'])
+            subject = Subject.query.filter_by(name=s['name'])
             if subject is None:
-                subject = BlogSubject(name=s['name'], route=s['route'])
+                subject = Subject(name=s['name'], route=s['route'])
                 db.session.add(subject)
         db.session.commit()
