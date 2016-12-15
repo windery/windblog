@@ -19,7 +19,7 @@
                 <ul class="nav navbar-nav">
                     <li><a href="/home">主页</a></li>
                     {% for subject in subjects %}
-                            <li><a href={{ subject['route'] }}>{{ subject['name'] }}</a></li>
+                            <li><a href={{ subject[2] }}>{{ subject[1] }}</a></li>
                     {% endfor %}
                     <li><a href="/about">关于</a></li>
                 </ul>

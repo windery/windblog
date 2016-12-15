@@ -1,25 +1,22 @@
+#!venv/bin/python3
+# -*- coding:utf8 -*-
+
 import os
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 class Config:
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'pandoo'
+    SQLALCHEMY_DATABASE_URI = os.getenv('BLOG_DB_URI')
     SQLALCHEMY_COMMIT_ON_TEARDOWN = True
     SQLALCHEMY_TRACK_MODIFICATIONS = True
 
-    SUBJECTS = (
-#        {'name': u'主页', 'route': '/home'},
-        {'name': u'技术', 'route': '/technique'},
-        {'name': u'环境', 'route': '/environment'},
-        {'name': u'资源', 'route': '/resources'},
-        {'name': u'思考', 'route': '/thoughts'}
-#        {'name': u'关于', 'route': '/about'}
-    )
-    SUBJECT_VALUES = [
-        ('technique', u'技术'),
-        ('environment', u'环境'),
-        ('resources', u'资源'),
-        ('thoughts', u'思考')
+    SUBJECTS = [
+        ('technique', u'技术', '/technique'),
+        ('environment', u'环境', '/environment'),
+        ('resources', u'资源', '/resources'),
+        ('thoughts', u'思考', '/thoughts')
     ]
+
 
     @staticmethod
     def init_app(app):
@@ -27,10 +24,8 @@ class Config:
 
 class DevelopmentConfig(Config):
     DEBUG = True
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'data-dev.sqlite')
 
 class ProductionConfig(Config):
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'data.sqlite')
 
     @classmethod
     def init_app(cls, app):

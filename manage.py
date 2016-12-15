@@ -2,11 +2,12 @@
 #-*- coding: utf-8 -*-
 
 import os
-from app import create_app, db
+from app import create_app, db, init_subjects
 from flask_script import Manager, Shell
 from flask_migrate import Migrate, MigrateCommand
 
 app = create_app(os.getenv('BLOG_CONFIG') or 'default')
+
 manager = Manager(app)
 migrate = Migrate(app, db, render_as_batch=True)
 
