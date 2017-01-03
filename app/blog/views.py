@@ -9,6 +9,9 @@ from config import Config
 def render_blog_template(template_name, **kwargs):
     return render_template(template_name, subjects=Config.SUBJECTS, **kwargs)
 
+def get_posts_by_subject(subject_name):
+    return Post.query.filter_by(subject_name=subject_name).all()
+
 
 @blog.route('/')
 @blog.route('/home')
@@ -18,25 +21,25 @@ def index():
 
 @blog.route('/technique', methods=['GET'])
 def technique():
-    posts = []
+    posts = get_posts_by_subject(subject_name='technique')
     return render_blog_template('posts.html', posts=posts)
 
 
 @blog.route('/environment', methods=['GET'])
 def environment():
-    posts = []
+    posts = get_posts_by_subject(subject_name='environment')
     return render_blog_template('posts.html', posts=posts)
 
 
 @blog.route('/resources', methods=['GET'])
 def resources():
-    posts = []
+    posts = get_posts_by_subject(subject_name='resources')
     return render_blog_template('posts.html', posts=posts)
 
 
 @blog.route('/thoughts', methods=['GET'])
 def thoughts():
-    posts = []
+    posts = get_posts_by_subject(subject_name='thoughts')
     return render_blog_template('posts.html', posts=posts)
 
 
@@ -66,6 +69,13 @@ def edit():
         db.session.commit()
         print("success ----------------------------------------------------")
     return render_blog_template('edit.html', post_form=post_form)
+
+@blog.route('/post/<title>', methods=['GET'])
+def post(title):
+    post = Post.query.filter_by(title=title).first()
+    posts = get_posts_by_subject(post.subject_name)
+    return render_blog_template('post.html', posts=posts, post=post)
+
 
 @blog.route('/init_db', methods=['GET'])
 def init_db():

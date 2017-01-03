@@ -9,7 +9,7 @@ class Post(db.Model):
     __tablename__ = 'post'
     id = db.Column(db.Integer, primary_key=True)
     subject_name = db.Column(db.String(100), db.ForeignKey('subject.name'))
-    title = db.Column(db.String(100))
+    title = db.Column(db.String(100), unique=True)
     content = db.Column(db.Text)
     create_time = db.Column(db.DateTime, default=datetime.utcnow)
     modify_time = db.Column(db.DateTime, default=datetime.utcnow)

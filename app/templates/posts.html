@@ -1,48 +1,7 @@
 {% extends 'base.html' %}
 {% block page_content %}
-    <p> test post!</p>
-
-    <!-- JiaThis Button BEGIN -->
-    <div class="jiathis_style_32x32">
-        <a class="jiathis_button_weixin"></a>
-        <a class="jiathis_button_cqq"></a>
-        <a class="jiathis_button_tsina"></a>
-        <a class="jiathis_button_fb"></a>
-        <a class="jiathis_button_twitter"></a>
-        <a class="jiathis_button_gmail"></a>
-        <a class="jiathis_button_copy"></a>
-        <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank"></a>
-        <a class="jiathis_counter_style"></a>
-    </div>
-    <script type="text/javascript" >
-        var jiathis_config={
-            siteNum:6,
-            sm:"cqq,weixin,tsina,fb,twitter,email",
-            summary:"",
-            boldNum:3,
-            shortUrl:false,
-            hideMore:false
-        }
-    </script>
-    <script type="text/javascript" src="http://v3.jiathis.com/code_mini/jia.js" charset="utf-8"></script>
-    <!-- JiaThis Button END -->
-
-
-    <!-- 多说评论框 start -->
-    <div class="ds-thread" data-thread-key="post_id" data-title="post_title" data-url="post_url"></div>
-    <!-- 多说评论框 end -->
-    <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
-    <script type="text/javascript">
-        var duoshuoQuery = {short_name:"winderyy"};
-        (function() {
-            var ds = document.createElement('script');
-            ds.type = 'text/javascript';ds.async = true;
-            ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.unstable.js';
-            ds.charset = 'UTF-8';
-            (document.getElementsByTagName('head')[0]
-            || document.getElementsByTagName('body')[0]).appendChild(ds);
-        })();
-    </script>
-    <!-- 多说公共JS代码 end -->
+    {% for post in posts %}
+        <p><a href="{{ url_for('.post', title=post.title) }}"> title: {{ post.title }}</a></p>
+    {% endfor %}
 {% endblock %}
 
