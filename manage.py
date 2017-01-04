@@ -5,11 +5,13 @@ import os
 from app import create_app, db, init_subjects
 from flask_script import Manager, Shell
 from flask_migrate import Migrate, MigrateCommand
+from flaskext.markdown import Markdown
 
 app = create_app(os.getenv('BLOG_CONFIG') or 'default')
 
 manager = Manager(app)
 migrate = Migrate(app, db, render_as_batch=True)
+markdown = Markdown(app)
 
 #添加命令shell， 导入这些变量到shell环境
 def make_shell_context():

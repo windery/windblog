@@ -1,28 +1,31 @@
 {% extends 'base.html' %}
 {% block page_content %}
-    <div>
-    <div class="row">
-        <div class="col-md-5">
-            <h1>{{ post.title }}</h1>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-5">
+                <h1>{{ post.title }}</h1>
+            </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-md-8"> Posted by <a href="{{ url_for('.about') }}"><strong>Windery</strong></a>
-            under <a href={{ url_for('blog.'+post.subject_name) }}><strong>{{ post.subject_name }}</strong></a> </div>
-        <div class="col-md-2"><span class="glyphicon glyphicon-time"></span> {{ post.create_time }}</div>
-    </div>
-    <hr>
-    <div class="row">
-        <div class="col-lg-10">
-            <textarea>{{ post.content }}</textarea>
+        <div class="row">
+            <div class="col-md-8"> Posted by <a href="{{ url_for('.about') }}"><strong>Windery</strong></a>
+                under <a href={{ url_for('blog.'+post.subject_name) }}><strong>{{ post.subject_name }}</strong></a> </div>
+            <div class="col-md-4"><span class="glyphicon glyphicon-time"></span> Created on {{ post.create_time }}</div>
         </div>
-    </div>
-    <hr>
-    <p><span class="glyphicon glyphicon-time"></span>Last updated on {{ post.update_time }}</p>
-    <div class="well">
-        <h4>留言：</h4>
-        <form role="form">
+        <hr>
+        <div class="row">
+            <div class="col-lg-10">
+                {% filter markdown %}
+                    {{ post.content }}
+                {% endfilter %}
+            </div>
+        </div>
+        <hr>
+        <p><span class="glyphicon glyphicon-time"></span>Last updated on {{ post.modify_time }}</p>
+        <div class="well">
+            <span class="label label-primary">留言</span>
+            <form role="form">
 
-        </form>
+            </form>
+        </div>
     </div>
 {% endblock %}
