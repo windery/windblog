@@ -1,9 +1,10 @@
-from flask import render_template, url_for, current_app, flash, redirect, jsonify
+from flask import render_template, url_for, flash, redirect, jsonify
 from . import blog
 from .forms import PostForm
 from ..models import Post, Subject
 from .. import db
 from config import Config
+from datetime import datetime
 
 
 def render_blog_template(template_name, **kwargs):
@@ -12,11 +13,15 @@ def render_blog_template(template_name, **kwargs):
 def get_posts_by_subject(subject_name):
     return Post.query.filter_by(subject_name=subject_name).all()
 
+def get_all_posts():
+    return Post.query.all()
+
 
 @blog.route('/')
 @blog.route('/home')
 def index():
-    return render_blog_template('index.html')
+    posts = get_all_posts()
+    return render_blog_template('index.html', posts=posts)
 
 
 @blog.route('/technique', methods=['GET'])
@@ -49,32 +54,45 @@ def about():
     return render_blog_template('about.html')
 
 
-@blog.route('/edit', methods=['GET', 'POST'])
-def edit():
+@blog.route('/edit/<title>', methods=['GET', 'POST'])
+def edit(title):
+    if title:
+        post = Post.query.filter_by(title=title).first()
     post_form = PostForm()
+    if post:
+        post_form.title.data = post.title
+        post_form.subject.data = post.subject_name
+        post_form.content.data = post.content
+        post_form.tags.data = post.tags
+        post_form.update = True
     if post_form.validate_on_submit():
-        blog_post = Post(
-            title=post_form.title.data,
-            subject_name=post_form.subject.data,
-            content=post_form.content.data,
-            tags=post_form.tags.data #,
-            # create_time=datetime.utcnow(),
-            # modify_time=datetime.utcnow()
-        )
-        print('title : ' + post_form.title.data)
-        print('subject : ' + post_form.subject.data)
-        print('content : ' + post_form.content.data)
-        print('tags : ' + post_form.tags.data)
-        db.session.add(blog_post)
+        if not post:
+            post = Post(
+                title=post_form.title.data,
+                subject_name=post_form.subject.data,
+                content=post_form.content.data,
+                tags=post_form.tags.data,
+                create_time=datetime.utcnow(),
+                modify_time=datetime.utcnow()
+            )
+            db.session.add(post)
+            flash('new post ' + post_form.title.data + ' has been published')
+        else:
+            post.title=post_form.title.data,
+            post.subject_name=post_form.subject.data,
+            post.content=post_form.content.data,
+            post.tags=post_form.tags.data,
+            post.create_time=datetime.utcnow(),
+            post.modify_time=datetime.utcnow()
+            flash('post ' + post_form.title.data + ' has been updated')
         db.session.commit()
-        print("success ----------------------------------------------------")
     return render_blog_template('edit.html', post_form=post_form)
+
 
 @blog.route('/post/<title>', methods=['GET'])
 def post(title):
     post = Post.query.filter_by(title=title).first()
-    posts = get_posts_by_subject(post.subject_name)
-    return render_blog_template('post.html', posts=posts, post=post)
+    return render_blog_template('post.html', post=post)
 
 
 @blog.route('/init_db', methods=['GET'])
