@@ -17,13 +17,16 @@ class Post(db.Model):
 
     comment = db.relationship('Comment', backref=db.backref('post'))
 
+    def get_brief_content(self):
+        return str(self.content)[0:100]
+
 
 class Comment(db.Model):
     __tablename__ = 'comment'
     id = db.Column(db.Integer, primary_key=True)
     post_id = db.Column(db.Integer, db.ForeignKey('post.id'))
     parent_id = db.Column(db.Integer, db.ForeignKey('comment.id'))
-    content = db.Column(db.TEXT(500))
+    content = db.Column(db.TEXT)
     email = db.Column(db.String(100))
     time = db.Column(db.Integer)
 
@@ -43,8 +46,6 @@ class Subject(db.Model):
         subjects = Config.SUBJECTS
         for s in subjects:
             subject = Subject.query.filter_by(name=s[0]).first()
-#            print('name : ' + s['name'] + ', route : ' + s['route'])
-#            print('name : ' + subject.name + ', route : ' + subject.route)
             if subject is None:
                 subject = Subject(name=s[0], name_ch=s[1], route=s[2])
                 db.session.add(subject)
