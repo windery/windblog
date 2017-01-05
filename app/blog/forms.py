@@ -9,9 +9,9 @@ from config import Config
 
 
 class PostForm(FlaskForm):
-    title = StringField('标题', validators=[DataRequired(), Length(1, 100)])
-    content = TextAreaField('内容', validators=[DataRequired()])
-    subject = SelectField('主题', validators=[DataRequired()], choices=[(s[0], s[1]) for s in Config.SUBJECTS])
-    tags = StringField('标签')
-    submit = SubmitField('发布')
+    title = StringField('title', validators=[DataRequired(), Length(1, 100)])
+    content = TextAreaField('content', validators=[DataRequired()])
+    subject = SelectField('subject', validators=[DataRequired()], choices=[(s[0], s[0]) for s in Config.SUBJECTS])
+    tags = StringField('tags')
+    submit = SubmitField('publish')
 

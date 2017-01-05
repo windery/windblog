@@ -1,60 +1,65 @@
 {% extends 'base.html' %}
-{% import 'bootstrap/wtf.html' as wtf %}
 
 {% block page_content %}
-    {% for message in get_flashed_messages() %}
-    <div class="alert alert-warning ">
-    <button type="button" class="close" data-dismiss="alert">&times;</button>
-    {{ message }}
-    </div>
-    {% endfor %}
+    <div class="container">
     <div class="page-header">
         <h3>Publish Post</h3>
     </div>
     <form class="form-horizontal" method="POST">
         {{ post_form.hidden_tag() }}
-        <div class="form-group"></div>
-        <div class="form-group">
+        <div class="row">
+            <div class="col-md-1 col-md-offset-1">
+                {{ post_form.subject.label(class="control-label text-center") }}
+            </div>
             <div class="col-md-2">
                 {{ post_form.subject(class="form-control input-group-lg") }}
             </div>
-        </div>
-        <div class="form-group"></div>
-        <div class="form-group"></div>
-        <div class="form-group"></div>
-        <div class="form-group">
-            {{ post_form.title.label(class="col-md-4 control-label text-center") }}
-            <div class="col-md-3 ">
-                {{ post_form.title(class="form-control col-md-offset-2", id='subject') }}
+            <div class="col-md-1 col-md-offset-1">
+                {{ post_form.tags.label(class="control-label") }}
+            </div>
+            <div class="col-md-3">
+                {{ post_form.tags(class="form-control", placeholder="tags splits with ','") }}
             </div>
         </div>
-        <div class="form-group"></div>
-        <div class="form-group"></div>
-        <div class="form-group">
-            {{ post_form.content.label(class="col-md-2 control-label") }}
-            <div class="col-md-8 ">
-                {{ post_form.content(class="form-control", rows="30") }}
+        <br>
+        <br>
+        <div class="row">
+            <div class="col-md-1 col-md-offset-1">
+                {{ post_form.title.label(class="control-label", placeholder="passage title") }}
+            </div>
+            <div class="col-md-5 ">
+                {% if title %}
+                    {{ post_form.title(class="form-control", readonly="true") }}
+                {% else %}
+                    {{ post_form.title(class="form-control") }}
+                {% endif %}
             </div>
         </div>
-        <div class="form-group"></div>
-        <div class="form-group"></div>
-        <div class="form-group"></div>
-        <div class="form-group">
-            {{ post_form.tags.label(class="col-md-2  col-md-offset-1 control-label") }}
-            <div class="col-md-2 ">
-                {{ post_form.tags(class="form-control", placeholder="请输入标签，以逗号隔开") }}
+        <br>
+        <br>
+        <div class="row">
+            <div class="col-md-1">
+            {{ post_form.content.label }}
             </div>
-            <div class="col-md-1 col-md-offset-3">
-                <p>
-                <button type="submit" class="btn-primary btn-sm" id="submit">
-                    {% if post_form.update %}更新{% else %}发布{% endif %}
-                </button>
-                </p>
+            <div class="col-md-8">
+                {{ post_form.content(rows=25, class="form-control") }}
             </div>
         </div>
-        <div class="form-group"></div>
-        <div class="form-group"></div>
-        <div class="form-group"></div>
-        <div class="form-group"></div>
+    <br>
+        <div class="row">
+            <div class="col-md-2 col-md-offset-1">
+                {% if title %}
+                    <a class="btn btn-primary text-center form-control" href={{ url_for('.post', title=title) }}>Cancel</a>
+                {% else %}
+                    <a class="btn btn-primary text-center form-control" href={{ url_for('.index') }}>Cancel</a>
+                {% endif %}
+            </div>
+            <div class="col-md-2 col-md-offset-3">
+                {% with value = 'Save' if post_form.update else 'Publish' %}
+                    {{ post_form.submit(value=value, class='button btn-primary form-control') }}
+                {% endwith %}
+            </div>
+        </div>
     </form>
+    </div>
 {% endblock %}
