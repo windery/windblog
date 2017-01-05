@@ -6,8 +6,13 @@ from app import create_app, db, init_subjects
 from flask_script import Manager, Shell
 from flask_migrate import Migrate, MigrateCommand
 from flaskext.markdown import Markdown
+from config import Config
 
 app = create_app(os.getenv('BLOG_CONFIG') or 'default')
+
+@app.context_processor
+def subject_processor():
+    return dict(subjects=Config.SUBJECTS)
 
 manager = Manager(app)
 migrate = Migrate(app, db, render_as_batch=True)
