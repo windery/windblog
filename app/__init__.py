@@ -4,7 +4,6 @@
 from flask import Flask
 from flask_bootstrap import Bootstrap
 from flask_sqlalchemy import SQLAlchemy
-
 from config import config
 
 bootstrap = Bootstrap()
@@ -24,7 +23,9 @@ def create_app(config_name):
 
     return app
 
+
 def init_subjects():
     from .models import Subject
     Subject.insert_subjects()
+
 

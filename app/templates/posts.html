@@ -1,7 +1,28 @@
 {% extends 'base.html' %}
+
 {% block page_content %}
+    <h1 class="page-header">
+        Home
+        <small>latest posts</small>
+    </h1>
     {% for post in posts %}
-        <p><a href="{{ url_for('.post', title=post.title) }}"> title: {{ post.title }}</a></p>
+        <h2>
+            <a href="{{ url_for('blog.post', title=post.title) }}">{{ post.title }}</a>
+        </h2>
+        <p class="lead">
+            by <a href="{{ url_for('blog.about') }}">Windery</a>
+        </p>
+        <p>
+            <span class="glyphicon glyphicon-time"></span> Posted on {{ post.create_time }}
+        </p>
+        <hr>
+        {% filter markdown %}
+            {{ post.get_brief_content() }}
+        {% endfilter %}
+        <a class="btn btn-primary" href="{{ url_for('blog.post', title=post.title) }}">
+            Read More
+            <span class="glyphicon glyphicon-chevron-right"></span>
+        </a>
+        <hr>
     {% endfor %}
 {% endblock %}
-
