@@ -4,6 +4,16 @@
 from . import db
 from config import Config
 from datetime import datetime
+from sqlalchemy import desc
+
+
+class User(db.Model):
+    __tablename__ = 'user'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(255), nullable=False)
+    email = db.Column(db.String(255), unique=True, nullable=False)
+    qq = db.Column(db.String(255), unique=True, nullable=True)
+
 
 class Post(db.Model):
     __tablename__ = 'post'
@@ -17,9 +27,23 @@ class Post(db.Model):
 
     comment = db.relationship('Comment', backref=db.backref('post'))
 
+    @staticmethod
+    def get_latest_posts_by_subject(subject_name):
+        return Post.query.filter_by(subject_name=subject_name).order_by(desc(Post.modify_time)).all()
+
+    @staticmethod
+    def get_posts():
+        return Post.query.all()
+
+    @staticmethod
+    def get_latest_posts():
+        return Post.query.order_by(desc(Post.create_time)).limit(100).all()
+
     def get_brief_content(self):
         return str(self.content)[0:100]
 
+    def __repr__(self):
+        return '<Post %r>' % self.title
 
 class Comment(db.Model):
     __tablename__ = 'comment'

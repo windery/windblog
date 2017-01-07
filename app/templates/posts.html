@@ -15,10 +15,7 @@
         <p>
             <span class="glyphicon glyphicon-time"></span> Posted on {{ post.create_time }}
         </p>
-        <hr>
-        {% filter markdown %}
-            {{ post.get_brief_content() }}
-        {% endfilter %}
+            {{ post.get_brief_content() | markdown }}
         <a class="btn btn-primary" href="{{ url_for('blog.post', title=post.title) }}">
             Read More
             <span class="glyphicon glyphicon-chevron-right"></span>

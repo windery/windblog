@@ -4,48 +4,37 @@ from .forms import PostForm
 from ..models import Post, Subject
 from .. import db
 from datetime import datetime
-from sqlalchemy import desc
-
-
-def get_posts_by_subject(subject_name):
-    return Post.query.filter_by(subject_name=subject_name).all()
-
-def get_all_posts():
-    return Post.query.all()
-
-def get_latest_posts():
-    return Post.query.order_by(desc(Post.create_time)).limit(100).all()
 
 
 @blog.route('/')
 @blog.route('/home')
 @blog.route('/index')
 def index():
-    posts = get_latest_posts()
+    posts = Post.get_latest_posts()
     return render_template('posts.html', posts=posts)
 
 
 @blog.route('/technique', methods=['GET'])
 def technique():
-    posts = get_posts_by_subject(subject_name='technique')
+    posts = Post.get_latest_posts_by_subject(subject_name='technique')
     return render_template('posts.html', posts=posts)
 
 
 @blog.route('/environment', methods=['GET'])
 def environment():
-    posts = get_posts_by_subject(subject_name='environment')
+    posts = Post.get_latest_posts_by_subject(subject_name='environment')
     return render_template('posts.html', posts=posts)
 
 
 @blog.route('/resources', methods=['GET'])
 def resources():
-    posts = get_posts_by_subject(subject_name='resources')
+    posts = Post.get_latest_posts_by_subject(subject_name='resources')
     return render_template('posts.html', posts=posts)
 
 
 @blog.route('/thoughts', methods=['GET'])
 def thoughts():
-    posts = get_posts_by_subject(subject_name='thoughts')
+    posts = Post.get_latest_posts_by_subject(subject_name='thoughts')
     return render_template('posts.html', posts=posts)
 
 
@@ -70,6 +59,7 @@ def edit(title=None):
             post_form.tags.data = post.tags
         post_form.update = True
     if post_form.validate_on_submit():
+        title = post_form.title.data
         if not post:
             post = Post(
                 title=post_form.title.data,
@@ -80,7 +70,6 @@ def edit(title=None):
                 modify_time=datetime.utcnow()
             )
             db.session.add(post)
-            title = post_form.title.data
             flash('new post 【' + title + '】 successfully published', 'success')
         else:
             post.title=post_form.title.data
@@ -88,7 +77,7 @@ def edit(title=None):
             post.content=post_form.content.data.strip()
             post.tags=post_form.tags.data
             post.modify_time=datetime.utcnow()
-            flash('current post has been updated', 'success')
+            flash('post【' + title + '】  has been updated', 'success')
         db.session.commit()
         return redirect(url_for('.post', title=title))
     elif request.method is 'POST':
