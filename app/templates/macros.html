@@ -1,0 +1,88 @@
+{% macro show_flashed_messages() %}
+    {%  with messages = get_flashed_messages(with_categories=True) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                {#                info, success, warning, info #}
+                <div class="alert alert-{{ category }}">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+{% endmacro %}
+
+{% macro show_brief_post(post) %}
+    <div class="col-md-12">
+        <h1>
+            <a class="text-info" href="{{ url_for('blog.post', title=post.title) }}">{{ post.title }}</a>
+        </h1>
+    </div>
+    <div class="col-md-9">
+        <a class="btn-xs btn-danger" href="{{ url_for('blog.about') }}"><b>Windery</b></a>
+        posted under
+        <a class="btn-xs btn-warning" href="http://huanglang.org">tag1</a>
+        <a class="btn-xs btn-warning"href="http://huanglang.org">tag2</a>
+    </div>
+    <div class="col-md-3 text-muted">
+        <i class="fa fa-clock-o"></i>{{ post.create_time }}
+    </div>
+    <div class="col-md-12"><p></p></div>
+    <div class="col-md-12">
+        <div class="well">
+            <p>
+                {{ post.get_brief_content() | markdown }}
+            </p>
+            <p class="text-right">
+                <a class="btn btn-primary" href="{{ url_for('blog.post', title=post.title) }}">
+                    Read More
+                    <span class="glyphicon glyphicon-chevron-right"></span>
+                </a>
+            </p>
+        </div>
+    </div>
+    <hr>
+{% endmacro %}
+
+{% macro show_posts(posts) %}
+    {% for post in posts %}
+        {{ show_brief_post(post) }}
+    {% endfor %}
+{% endmacro %}
+
+{% macro show_tags(tags=None) %}
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">Tags</h4>
+        </div>
+        <div class="panel-body">
+            <a class="btn-xs btn-info" href="http://kolapapa.com">test_tag</a>
+            <a class="btn-xs btn-info" href="http://kolapapa.com">test_tag</a>
+            <a class="btn-xs btn-info" href="http://kolapapa.com">test_tag</a>
+            <a class="btn-xs btn-info" href="http://kolapapa.com">test_tag</a>
+            <a class="btn-xs btn-info" href="http://kolapapa.com">test_tag</a>
+            <a class="btn-xs btn-info" href="http://kolapapa.com">test_tag</a>
+        </div>
+    </div>
+    {#    <div class="well">#}
+    {#        <a class="btn-sm btn-success" style="margin-bottom:40px;" href="http://kolapapa.com">test_tag</a>#}
+    {#        <a class="btn-sm btn-success" style="margin-bottom:40px;" href="http://kolapapa.com">test_tag</a>#}
+    {#        <a class="btn-sm btn-success" style="margin-bottom:40px;" href="http://kolapapa.com">test_tag</a>#}
+    {#        <a class="btn-sm btn-success" style="margin-bottom:40px;" href="http://kolapapa.com">test_tag</a>#}
+    {#        <a class="btn-sm btn-success" style="margin-bottom:40px;" href="http://kolapapa.com">test_tag</a>#}
+    {#    </div>#}
+{% endmacro %}
+
+{% macro show_links(links=None) %}
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">Links</h4>
+        </div>
+        <div class="panel-body">
+            <a class="btn-xs btn-info" href="http://kolapapa.com">test_link</a>
+            <a class="btn-xs btn-info" href="http://kolapapa.com">test_link</a>
+            <a class="btn-xs btn-info" href="http://kolapapa.com">test_link</a>
+            <a class="btn-xs btn-info" href="http://kolapapa.com">test_link</a>
+        </div>
+    </div>
+{% endmacro %}

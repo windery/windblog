@@ -11,31 +11,36 @@ from datetime import datetime
 @blog.route('/index')
 def index():
     posts = Post.get_latest_posts()
-    return render_template('posts.html', posts=posts)
+    return render_template('index.html', posts=posts)
+
+
+@blog.route('/manager', methods=['GET'])
+def manager():
+    return  render_template('manager.html')
 
 
 @blog.route('/technique', methods=['GET'])
 def technique():
     posts = Post.get_latest_posts_by_subject(subject_name='technique')
-    return render_template('posts.html', posts=posts)
+    return render_template('posts.html', posts=posts, subject='technique')
 
 
 @blog.route('/environment', methods=['GET'])
 def environment():
     posts = Post.get_latest_posts_by_subject(subject_name='environment')
-    return render_template('posts.html', posts=posts)
+    return render_template('posts.html', posts=posts, subject='environment')
 
 
 @blog.route('/resources', methods=['GET'])
 def resources():
     posts = Post.get_latest_posts_by_subject(subject_name='resources')
-    return render_template('posts.html', posts=posts)
+    return render_template('posts.html', posts=posts, subject='resources')
 
 
 @blog.route('/thoughts', methods=['GET'])
 def thoughts():
     posts = Post.get_latest_posts_by_subject(subject_name='thoughts')
-    return render_template('posts.html', posts=posts)
+    return render_template('posts.html', posts=posts, subject='thoughts')
 
 
 

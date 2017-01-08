@@ -5,28 +5,39 @@
             <div class="pull-right col-md-3">
                 <a class="btn btn-info" href={{ url_for('.edit') }}>New Post</a>
                 <a class="btn btn-info" href={{ url_for('.edit', title=post.title) }}>Edit Post</a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <h1>{{ post.title }}</h1>
+            </div>
+        </div>
+        <br>
+        <div class="row">
+                <div class="col-md-8">
+                    Posted by <a href="{{ url_for('.about') }}"><strong>Windery</strong></a>
+                    under <a href={{ url_for('blog.'+post.subject_name) }}><strong>{{ post.subject_name }}</strong></a>
+                </div>
+                <div class="col-md-4">
+                    <span class="glyphicon glyphicon-time"></span> Created at {{ post.create_time }}
                 </div>
         </div>
-        <div class="row">
-                <h1>{{ post.title }}</h1>
-        </div>
-        <br>
-        <div class="row">
-            <div class="col-md-8">
-                Posted by <a href="{{ url_for('.about') }}"><strong>Windery</strong></a>
-                under <a href={{ url_for('blog.'+post.subject_name) }}><strong>{{ post.subject_name }}</strong></a>
-            </div>
-            <div class="col-md-4"><span class="glyphicon glyphicon-time"></span> Created at {{ post.create_time }}</div>
-        </div>
         <hr>
         <br>
         <div class="row">
-            <div class="col-lg-11 well">
-                {{ post.content | markdown }}
+            <div class="col-md-12">
+                <div class="well">
+                    {{ post.content | markdown }}
+                </div>
+            </div>
+            <div class="col-md-4 pull-right">
+                    <span class="glyphicon glyphicon-time"></span>
+                    Updated at {{ post.modify_time }}
             </div>
         </div>
         <hr>
-        <p><span class="glyphicon glyphicon-time"></span>Last updated on {{ post.modify_time }}</p>
+        <div class="row">
+        </div>
         <div class="well">
             <span class="label label-primary">留言</span>
             <form role="form">
