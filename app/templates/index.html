@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% import 'macros.html' as macros %}
+
+{% block page_content %}
+    <div class="col-md-8">
+        <h1 class="page-header">
+            Latest Posts
+        </h1>
+        {{ macros.show_posts(posts) }}
+    </div>
+    <div class="col-md-3 col-md-offset-1">
+        {{ macros.show_tags() }}
+        {{ macros.show_links() }}
+    </div>
+{% endblock %}
