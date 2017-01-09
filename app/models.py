@@ -29,11 +29,21 @@ class Post(db.Model):
     tag = db.relationship('Tag', backref='post')
 
     @classmethod
+    def delete_post_by_title(cls, title):
+        Tag.delete_post(title)
+        post = cls.query.filter_by(title=title).first()
+        db.session.delete(post)
+
+    @classmethod
     def delete_post_by_id(cls, id):
         post = cls.query.filter_by(id=id).first()
         post_title = post.title
         db.session.delete(post)
         cls.delete_post(post_title=post_title)
+
+    @classmethod
+    def get_post_by_title(cls, title):
+        return cls.query.filter_by(title=title).first()
 
     @classmethod
     def get_latest_posts_by_subject(cls, subject_name):
@@ -100,7 +110,7 @@ class Subject(db.Model):
 
 class Tag(db.Model):
     name = db.Column(db.String(50), primary_key=True)
-    post_title = db.Column(db.String(255), db.ForeignKey('post.title'), primary_key=True)
+    post_title = db.Column(db.String(255), db.ForeignKey('post.title'), nullable=False)
 
     @classmethod
     def delete_tag(cls, name):

@@ -132,8 +132,8 @@ def clear_db():
 
 @blog.route('/delete/<title>')
 def delete(title):
-    post = Post.query.filter_by(title=title).first()
+    post = Post.get_post_by_title(title)
     subject = post.subject_name
-    db.session.delete(post)
+    Post.delete_post_by_title(title)
     flash('Post【' + title + '】 successfully deleted', 'success')
     return redirect(url_for('blog.'+subject))
