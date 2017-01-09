@@ -42,6 +42,12 @@ class Post(db.Model):
     def get_brief_content(self):
         return str(self.content)[0:100]
 
+    @staticmethod
+    def clear():
+        Post.query.delete()
+        db.session.commit()
+
+
     def __repr__(self):
         return '<Post %r>' % self.title
 
@@ -61,7 +67,6 @@ class Subject(db.Model):
     __tablename__ = 'subject'
     name = db.Column(db.String(50), primary_key=True)
     name_ch = db.Column(db.String(50), unique=True)
-    route = db.Column(db.String(255), unique=True)
 
     post = db.relationship('Post', backref=db.backref('subject'), lazy='dynamic')
 
@@ -71,6 +76,12 @@ class Subject(db.Model):
         for s in subjects:
             subject = Subject.query.filter_by(name=s[0]).first()
             if subject is None:
-                subject = Subject(name=s[0], name_ch=s[1], route=s[2])
+                subject = Subject(name=s[0], name_ch=s[1])
                 db.session.add(subject)
+        db.session.commit()
+
+    @staticmethod
+    def clear():
+        Post.query.delete()
+        Subject.query.delete()
         db.session.commit()

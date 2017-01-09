@@ -15,7 +15,7 @@
             <ul class="nav navbar-nav">
                 {% for subject in subjects %}
                     <li>
-                        <a href={{ subject[2] }}><strong>{{ subject[0].title() }}</strong></a>
+                        <a href={{ url_for('blog.'+subject.name) }}><strong>{{ subject.name.title() }}</strong></a>
                     </li>
                 {% endfor %}
                 <li><a href="/about"><strong>About</strong></a></li>
