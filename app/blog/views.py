@@ -105,3 +105,20 @@ def init_db():
     }
     return jsonify(json)
 
+@blog.route('/clear_db', methods=['GET'])
+def clear_db():
+    Post.clear()
+    Subject.clear()
+    json = {
+        'code': 0,
+        'message': 'clear subjects in db success'
+    }
+    return jsonify(json)
+
+@blog.route('/delete/<title>')
+def delete(title):
+    post = Post.query.filter_by(title=title).first()
+    subject = post.subject_name
+    post.delete()
+    db.session.commit()
+    return redirect(url_for('blog.'+subject))
