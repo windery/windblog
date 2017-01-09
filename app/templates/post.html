@@ -1,6 +1,8 @@
 {% extends 'base.html' %}
+{% import 'macros.html' as macros %}
 {% block page_content %}
     <div class="container">
+        {#  post option buttons  #}
         <div class="row">
             <div class="pull-right col-md-4">
                 <a class="btn btn-info" href={{ url_for('blog.edit') }}>New Post</a>
@@ -8,41 +10,49 @@
                 <a class="btn btn-info" href="{{ url_for('blog.delete', title=post.title) }}">Delete Post</a>
             </div>
         </div>
+        {# post title #}
         <div class="row">
             <div class="col-md-12">
                 <h1>{{ post.title }}</h1>
             </div>
         </div>
         <br>
+        {# post author and subject #}
         <div class="row">
                 <div class="col-md-8">
-                    Posted by <a href="{{ url_for('.about') }}"><strong>Windery</strong></a>
-                    under <a href={{ url_for('blog.'+post.subject_name) }}><strong>{{ post.subject_name }}</strong></a>
+                    Posted by <a class="btn-xs btn-danger" href="{{ url_for('.about') }}"><strong>Windery</strong></a>
+                    under <a class="btn-xs btn-primary" href={{ url_for('blog.'+post.subject_name) }}><strong>{{ post.subject_name }}</strong></a>
                 </div>
                 <div class="col-md-4">
-                    <span class="glyphicon glyphicon-time"></span> Created at {{ post.create_time }}
+                    <span class="glyphicon glyphicon-time"></span> Created at </i>{{ post.create_time }}
                 </div>
         </div>
         <hr>
         <br>
+        {# post content #}
         <div class="row">
             <div class="col-md-12">
                 <div class="well">
                     {{ post.content | markdown }}
                 </div>
             </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4 pull-left">
+                {{ macros.show_tags(tags=post.get_tag_list()) }}
+            </div>
             <div class="col-md-4 pull-right">
-                    <span class="glyphicon glyphicon-time"></span>
-                    Updated at {{ post.modify_time }}
+                <span class="glyphicon glyphicon-time"></span>
+                Updated at {{ post.modify_time }}
             </div>
         </div>
         <hr>
+        {# comments #}
         <div class="row">
         </div>
         <div class="well">
             <span class="label label-primary">留言</span>
             <form role="form">
-
             </form>
         </div>
     </div>

@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% import 'macros.html' as macros %}
+
+{% block page_content %}
+<h1 class="page-header">
+ Posts with tag {{ tag }}
+</h1>
+{{ macros.show_posts(posts) }}
+{% endblock %}

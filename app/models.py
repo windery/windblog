@@ -4,7 +4,7 @@
 from . import db
 from config import Config
 from datetime import datetime
-from sqlalchemy import desc
+from sqlalchemy import desc, distinct
 
 
 class User(db.Model):
@@ -26,25 +26,36 @@ class Post(db.Model):
     tags = db.Column(db.String(100))
 
     comment = db.relationship('Comment', backref=db.backref('post'))
+    tag = db.relationship('Tag', backref='post')
 
-    @staticmethod
-    def get_latest_posts_by_subject(subject_name):
-        return Post.query.filter_by(subject_name=subject_name).order_by(desc(Post.modify_time)).all()
+    @classmethod
+    def delete_post_by_id(cls, id):
+        post = cls.query.filter_by(id=id).first()
+        post_title = post.title
+        db.session.delete(post)
+        cls.delete_post(post_title=post_title)
 
-    @staticmethod
-    def get_posts():
-        return Post.query.all()
+    @classmethod
+    def get_latest_posts_by_subject(cls, subject_name):
+        return cls.query.filter_by(subject_name=subject_name).order_by(desc(Post.modify_time)).all()
 
-    @staticmethod
-    def get_latest_posts():
-        return Post.query.order_by(desc(Post.create_time)).limit(100).all()
+    @classmethod
+    def get_posts(cls):
+        return cls.query.all()
+
+    @classmethod
+    def get_latest_posts(cls):
+        return cls.query.order_by(desc(cls.create_time)).limit(100).all()
 
     def get_brief_content(self):
         return str(self.content)[0:100]
 
-    @staticmethod
-    def clear():
-        Post.query.delete()
+    def get_tag_list(self):
+        return self.tags.split(',')
+
+    @classmethod
+    def clear(cls):
+        cls.query.delete()
         db.session.commit()
 
 
@@ -85,3 +96,40 @@ class Subject(db.Model):
         Post.query.delete()
         Subject.query.delete()
         db.session.commit()
+
+
+class Tag(db.Model):
+    name = db.Column(db.String(50), primary_key=True)
+    post_title = db.Column(db.String(255), db.ForeignKey('post.title'), primary_key=True)
+
+    @classmethod
+    def delete_tag(cls, name):
+        cls.query.filter_by(name=name).delete()
+        db.session.commit()
+
+    @classmethod
+    def delete_post(cls, post_title):
+        cls.query.filter_by(post_title=post_title).delete()
+        db.session.commit()
+
+    @classmethod
+    def add_tags(cls, post_title, tags):
+        if tags and post_title:
+            for tag in tags:
+                record = cls(name=tag, post_title=post_title)
+                db.session.add(record)
+            db.session.commit()
+
+    @classmethod
+    def update_tags(cls, post_title, tags):
+        if isinstance(tags, str):
+            tags = tags.split(',')
+        cls.delete_post(post_title=post_title)
+        cls.add_tags(post_title, tags)
+
+    @classmethod
+    def get_tags(cls):
+        records = cls.query.distinct(cls.name).all()
+        tags = [record.name for record in records]
+        return tags
+

@@ -9,7 +9,7 @@
         {{ macros.show_posts(posts) }}
     </div>
     <div class="col-md-3 col-md-offset-1">
-        {{ macros.show_tags() }}
-        {{ macros.show_links() }}
+        {{ macros.show_tags_panel(tags=tags) }}
+        {{ macros.show_links_panel() }}
     </div>
 {% endblock %}

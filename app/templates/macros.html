@@ -5,11 +5,21 @@
                 {#                info, success, warning, info #}
                 <div class="alert alert-{{ category }}">
                     <button type="button" class="close" data-dismiss="alert">&times;</button>
-                    {{ message }}
+                    <div class="text-center">
+                        {{ message }}
+                    </div>
                 </div>
             {% endfor %}
         {% endif %}
     {% endwith %}
+{% endmacro %}
+
+{% macro show_tags(tags=None) %}
+    {% if tags %}
+        {% for tag in tags %}
+            <a class="btn btn-xs label-default" style="color: #fff;" href="{{ url_for('blog.tag', tag=tag) }}">{{ tag }}</a>
+        {% endfor %}
+    {% endif %}
 {% endmacro %}
 
 {% macro show_brief_post(post) %}
@@ -35,8 +45,7 @@
         </div>
         <div class="col-md-6">
             <p class="text-left">
-                <a class="btn btn-xs label-default" style="color: #fff;" href="http://kolapapa.com">Tag1</a>
-                <a class="btn btn-xs label-default" style="color: #fff;" href="http://kolapapa.com">Tag1</a>
+                {{ show_tags(tags=post.get_tag_list()) }}
             </p>
         </div>
         <div class="col-md-6">
@@ -52,23 +61,24 @@
 {% endmacro %}
 
 {% macro show_posts(posts) %}
-    {% for post in posts %}
-        {{ show_brief_post(post) }}
-    {% endfor %}
+    {% if posts %}
+        {% for post in posts %}
+            {{ show_brief_post(post) }}
+        {% endfor %}
+    {% endif %}
 {% endmacro %}
 
-{% macro show_tags(tags=None) %}
+{% macro show_tags_panel(tags=None) %}
     <div class="panel panel-default">
         <div class="panel-heading">
             <h4 class="panel-title">Tags</h4>
         </div>
         <div class="panel-body">
-            <a class="btn-xs btn-info" href="http://kolapapa.com">test_tag</a>
-            <a class="btn-xs btn-info" href="http://kolapapa.com">test_tag</a>
-            <a class="btn-xs btn-info" href="http://kolapapa.com">test_tag</a>
-            <a class="btn-xs btn-info" href="http://kolapapa.com">test_tag</a>
-            <a class="btn-xs btn-info" href="http://kolapapa.com">test_tag</a>
-            <a class="btn-xs btn-info" href="http://kolapapa.com">test_tag</a>
+            {% if tags %}
+                {% for tag in tags %}
+                    <a class="btn-xs btn-info" href={{ url_for('blog.tag', tag=tag) }}>{{ tag }}</a>
+                {% endfor %}
+            {% endif %}
         </div>
     </div>
     {#    <div class="well">#}
@@ -80,7 +90,7 @@
     {#    </div>#}
 {% endmacro %}
 
-{% macro show_links(links=None) %}
+{% macro show_links_panel(links=None) %}
     <div class="panel panel-default">
         <div class="panel-heading">
             <h4 class="panel-title">Links</h4>

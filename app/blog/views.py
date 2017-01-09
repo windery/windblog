@@ -1,7 +1,7 @@
 from flask import render_template, url_for, flash, redirect, jsonify, request
 from . import blog
 from .forms import PostForm
-from ..models import Post, Subject
+from ..models import Post, Subject, Tag
 from .. import db
 from datetime import datetime
 
@@ -11,7 +11,8 @@ from datetime import datetime
 @blog.route('/index')
 def index():
     posts = Post.get_latest_posts()
-    return render_template('index.html', posts=posts)
+    tags = Tag.get_tags()
+    return render_template('index.html', posts=posts, tags=tags)
 
 
 @blog.route('/manager', methods=['GET'])
@@ -65,6 +66,7 @@ def edit(title=None):
         post_form.update = True
     if post_form.validate_on_submit():
         title = post_form.title.data
+        tags = post_form.tags.data
         if not post:
             post = Post(
                 title=post_form.title.data,
@@ -75,18 +77,19 @@ def edit(title=None):
                 modify_time=datetime.utcnow()
             )
             db.session.add(post)
-            flash('new post 【' + title + '】 successfully published', 'success')
+            flash('New post 【' + title + '】 successfully published', 'success')
         else:
             post.title=post_form.title.data
             post.subject_name=post_form.subject.data
-            post.content=post_form.content.data.strip()
+            post.content=post_form.content.data
             post.tags=post_form.tags.data
             post.modify_time=datetime.utcnow()
-            flash('post【' + title + '】  has been updated', 'success')
+            flash('Post【' + title + '】 sucessfully updated', 'success')
         db.session.commit()
+        Tag.update_tags(title, tags)
         return redirect(url_for('.post', title=title))
     elif request.method is 'POST':
-        flash('some data not valid, fix them and try again', 'warning')
+        flash('Some data not valid, fix them and try again', 'warning')
     return render_template('edit.html', post_form=post_form, title=title)
 
 
@@ -96,12 +99,24 @@ def post(title):
     return render_template('post.html', post=post)
 
 
+@blog.route('/tag/<tag>', methods=['GET'])
+def tag(tag):
+    posts = []
+    tag_records = Tag.query.filter_by(name=tag).all()
+    post_titles = [tag_record.post_title for tag_record in tag_records]
+    for post_title in post_titles:
+        post = Post.query.filter_by(title=post_title).first()
+        if post:
+            posts.append(post)
+    return render_template('tag.html', posts=posts, tag=tag)
+
+
 @blog.route('/init_db', methods=['GET'])
 def init_db():
     Subject.insert_subjects()
     json = {
         'code': 0,
-        'message': "init subjects in db success"
+        'message': "Init subjects in db success"
     }
     return jsonify(json)
 
@@ -111,7 +126,7 @@ def clear_db():
     Subject.clear()
     json = {
         'code': 0,
-        'message': 'clear subjects in db success'
+        'message': 'Clear subjects in db success'
     }
     return jsonify(json)
 
@@ -119,6 +134,6 @@ def clear_db():
 def delete(title):
     post = Post.query.filter_by(title=title).first()
     subject = post.subject_name
-    post.delete()
-    db.session.commit()
+    db.session.delete(post)
+    flash('Post【' + title + '】 successfully deleted', 'success')
     return redirect(url_for('blog.'+subject))
