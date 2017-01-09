@@ -21,8 +21,7 @@
     <div class="col-md-9">
         <a class="btn-xs btn-danger" href="{{ url_for('blog.about') }}"><b>Windery</b></a>
         posted under
-        <a class="btn-xs btn-warning" href="http://huanglang.org">tag1</a>
-        <a class="btn-xs btn-warning"href="http://huanglang.org">tag2</a>
+        <a class="btn-xs btn-warning" href="{{ url_for('blog.'+post.subject_name) }}"><b>{{ post.subject_name }}</b></a>
     </div>
     <div class="col-md-3 text-muted text-right">
         <i class="fa fa-clock-o"></i>{{ post.create_time }}
@@ -33,6 +32,14 @@
             <p>
                 {{ post.get_brief_content() | markdown }}
             </p>
+        </div>
+        <div class="col-md-6">
+            <p class="text-left">
+                <a class="btn btn-xs label-default" style="color: #fff;" href="http://kolapapa.com">Tag1</a>
+                <a class="btn btn-xs label-default" style="color: #fff;" href="http://kolapapa.com">Tag1</a>
+            </p>
+        </div>
+        <div class="col-md-6">
             <p class="text-right">
                 <a class="btn btn-primary" href="{{ url_for('blog.post', title=post.title) }}">
                     Read More
