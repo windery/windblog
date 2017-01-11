@@ -6,14 +6,17 @@
         <h3>Publish Post</h3>
     </div>
     <form class="form-horizontal" method="POST">
+        {# csrf #}
         {{ post_form.hidden_tag() }}
         <div class="row">
+            {# subject #}
             <div class="col-md-1 col-md-offset-1">
                 {{ post_form.subject.label(class="control-label text-center") }}
             </div>
             <div class="col-md-2">
                 {{ post_form.subject(class="form-control input-group-lg") }}
             </div>
+            {# tags #}
             <div class="col-md-1 col-md-offset-1">
                 {{ post_form.tags.label(class="control-label") }}
             </div>
@@ -23,6 +26,7 @@
         </div>
         <br>
         <br>
+        {# title #}
         <div class="row">
             <div class="col-md-1 col-md-offset-1">
                 {{ post_form.title.label(class="control-label", placeholder="passage title") }}
@@ -37,12 +41,16 @@
         </div>
         <br>
         <br>
+        {# content #}
         <div class="row">
             <div class="col-md-1">
             {{ post_form.content.label }}
             </div>
             <div class="col-md-8">
+{#                {{ post_form.content(rows=25, class="form-control", data-provide="markdown") }}#}
                 {{ post_form.content(rows=25, class="form-control") }}
+{#                <textarea name="content" rows="30" data-provice="markdown">#}
+                </textarea>
             </div>
         </div>
     <br>

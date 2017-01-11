@@ -23,6 +23,14 @@
 
 {% endblock %}
 
+{% block styles %}
+    {{ super() }}
+    {% include 'base/styles.html' %}
+{% endblock %}
 
+{% block scripts %}
+    {{ super() }}
+    {% include 'base/scripts.html' %}
+{% endblock %}
 
 
