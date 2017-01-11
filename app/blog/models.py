@@ -1,7 +1,7 @@
 #!venv/bin/python3
 # -*- coding:utf8 -*-
 
-from . import db
+from app import db
 from config import Config
 from datetime import datetime
 from sqlalchemy import desc, distinct

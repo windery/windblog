@@ -2,10 +2,13 @@
 #-*- coding: utf-8 -*-
 
 import os
-from app import create_app, db, models
-from flask_script import Manager, Shell
+
 from flask_migrate import Migrate, MigrateCommand
+from flask_script import Manager, Shell
 from flaskext.markdown import Markdown
+
+from app import create_app, db
+from app.blog import models
 
 app = create_app(os.getenv('BLOG_CONFIG') or 'default')
 

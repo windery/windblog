@@ -38,14 +38,12 @@
     </div>
     <div class="col-md-12"><p></p></div>
     <div class="col-md-12">
-        <div class="well">
-            <p>
-                {{ post.get_brief_content() | markdown }}
-            </p>
+        <div class="well" style="word-wrap: break-word">
+            {{ post.get_brief_content() | markdown }}
         </div>
         <div class="col-md-6">
             <p class="text-left">
-                {{ show_tags(tags=post.get_tag_list()) }}
+                {{ show_tags(tags=post.get_tag_list()) }} &nbsp;
             </p>
         </div>
         <div class="col-md-6">
@@ -81,13 +79,6 @@
             {% endif %}
         </div>
     </div>
-    {#    <div class="well">#}
-    {#        <a class="btn-sm btn-success" style="margin-bottom:40px;" href="http://kolapapa.com">test_tag</a>#}
-    {#        <a class="btn-sm btn-success" style="margin-bottom:40px;" href="http://kolapapa.com">test_tag</a>#}
-    {#        <a class="btn-sm btn-success" style="margin-bottom:40px;" href="http://kolapapa.com">test_tag</a>#}
-    {#        <a class="btn-sm btn-success" style="margin-bottom:40px;" href="http://kolapapa.com">test_tag</a>#}
-    {#        <a class="btn-sm btn-success" style="margin-bottom:40px;" href="http://kolapapa.com">test_tag</a>#}
-    {#    </div>#}
 {% endmacro %}
 
 {% macro show_links_panel(links=None) %}

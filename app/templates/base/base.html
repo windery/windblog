@@ -1,15 +1,15 @@
 {% extends 'bootstrap/base.html' %}
-{% import 'macros.html' as macros %}
+{% import 'macros/macros.html' as macros %}
 {% block head %}
     {{ super() }}
-    {% include 'head.html' %}
+    {% include 'base/head.html' %}
 {% endblock %}
 {% block title %}
     Windery's Blog
 {% endblock %}
 
 {% block navbar %}
-    {% include 'navbar.html' %}
+    {% include 'base/navbar.html' %}
 {% endblock %}
 
 {% block content %}
@@ -19,7 +19,7 @@
         {% endblock %}
     </div>
 
-    {% include 'footer.html' %}
+    {% include 'base/footer.html' %}
 
 {% endblock %}
 

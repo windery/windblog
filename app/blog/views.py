@@ -1,9 +1,11 @@
+from datetime import datetime
+
 from flask import render_template, url_for, flash, redirect, jsonify, request
+
+from app.blog.models import Post, Subject, Tag
 from . import blog
 from .forms import PostForm
-from ..models import Post, Subject, Tag
 from .. import db
-from datetime import datetime
 
 
 @blog.route('/')
@@ -12,36 +14,36 @@ from datetime import datetime
 def index():
     posts = Post.get_latest_posts()
     tags = Tag.get_tags()
-    return render_template('index.html', posts=posts, tags=tags)
+    return render_template('blog/index.html', posts=posts, tags=tags)
 
 
 @blog.route('/manager', methods=['GET'])
 def manager():
-    return  render_template('manager.html')
+    return  render_template('user/manager.html')
 
 
 @blog.route('/technique', methods=['GET'])
 def technique():
     posts = Post.get_latest_posts_by_subject(subject_name='technique')
-    return render_template('posts.html', posts=posts, subject='technique')
+    return render_template('blog/posts.html', posts=posts, subject='technique')
 
 
 @blog.route('/environment', methods=['GET'])
 def environment():
     posts = Post.get_latest_posts_by_subject(subject_name='environment')
-    return render_template('posts.html', posts=posts, subject='environment')
+    return render_template('blog/posts.html', posts=posts, subject='environment')
 
 
 @blog.route('/resources', methods=['GET'])
 def resources():
     posts = Post.get_latest_posts_by_subject(subject_name='resources')
-    return render_template('posts.html', posts=posts, subject='resources')
+    return render_template('blog/posts.html', posts=posts, subject='resources')
 
 
 @blog.route('/thoughts', methods=['GET'])
 def thoughts():
     posts = Post.get_latest_posts_by_subject(subject_name='thoughts')
-    return render_template('posts.html', posts=posts, subject='thoughts')
+    return render_template('blog/posts.html', posts=posts, subject='thoughts')
 
 
 
@@ -90,13 +92,13 @@ def edit(title=None):
         return redirect(url_for('.post', title=title))
     elif request.method is 'POST':
         flash('Some data not valid, fix them and try again', 'warning')
-    return render_template('edit.html', post_form=post_form, title=title)
+    return render_template('blog/edit.html', post_form=post_form, title=title)
 
 
 @blog.route('/post/<title>', methods=['GET'])
 def post(title):
     post = Post.query.filter_by(title=title).first()
-    return render_template('post.html', post=post)
+    return render_template('blog/post.html', post=post)
 
 
 @blog.route('/tag/<tag>', methods=['GET'])
@@ -108,7 +110,7 @@ def tag(tag):
         post = Post.query.filter_by(title=post_title).first()
         if post:
             posts.append(post)
-    return render_template('tag.html', posts=posts, tag=tag)
+    return render_template('blog/tag.html', posts=posts, tag=tag)
 
 
 @blog.route('/init_db', methods=['GET'])

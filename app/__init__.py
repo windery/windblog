@@ -4,6 +4,7 @@
 from flask import Flask
 from flask_bootstrap import Bootstrap
 from flask_sqlalchemy import SQLAlchemy
+
 from config import config
 
 bootstrap = Bootstrap()
@@ -25,7 +26,7 @@ def create_app(config_name):
 
 
 def init_subjects():
-    from .models import Subject
+    from app.blog.models import Subject
     Subject.insert_subjects()
 
 
