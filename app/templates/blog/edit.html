@@ -47,10 +47,7 @@
             {{ post_form.content.label }}
             </div>
             <div class="col-md-8">
-{#                {{ post_form.content(rows=25, class="form-control", data-provide="markdown") }}#}
-                {{ post_form.content(rows=25, class="form-control") }}
-{#                <textarea name="content" rows="30" data-provice="markdown">#}
-                </textarea>
+                {{ post_form.content(**{'id':'content', 'data-provide':'markdown', 'rows':25, 'class':'form-control'}) }}
             </div>
         </div>
     <br>
