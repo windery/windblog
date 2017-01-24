@@ -2,3 +2,4 @@ venv
 *.pyc
 migrations
 *.sqlite
+blog.log
