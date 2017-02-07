@@ -3,7 +3,7 @@ from datetime import datetime
 from flask import render_template, url_for, flash, redirect, jsonify, request
 
 from app.blog.models import Post, Subject, Tag
-from . import blog
+from . import blog_blueprint as blog
 from .forms import PostForm
 from .. import db
 

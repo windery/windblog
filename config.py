@@ -17,7 +17,6 @@ class Config:
         ('thoughts', u'思考')
     ]
 
-
     @staticmethod
     def init_app(app):
         pass

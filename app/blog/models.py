@@ -7,14 +7,6 @@ from datetime import datetime
 from sqlalchemy import desc, distinct
 
 
-class User(db.Model):
-    __tablename__ = 'user'
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(255), nullable=False)
-    email = db.Column(db.String(255), unique=True, nullable=False)
-    qq = db.Column(db.String(255), unique=True, nullable=True)
-
-
 class Post(db.Model):
     __tablename__ = 'post'
     id = db.Column(db.Integer, primary_key=True)
@@ -77,6 +69,7 @@ class Comment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     post_id = db.Column(db.Integer, db.ForeignKey('post.id'))
     parent_id = db.Column(db.Integer, db.ForeignKey('comment.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     content = db.Column(db.TEXT)
     email = db.Column(db.String(100))
     time = db.Column(db.Integer)
