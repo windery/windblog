@@ -109,8 +109,8 @@ class Subject(db.Model):
 
 
 class Tag(db.Model):
-    name = db.Column(db.String(50), primary_key=True)
-    post_title = db.Column(db.String(255), db.ForeignKey('post.title'), nullable=False)
+    tag = db.Column(db.String(50), primary_key=True)
+    post_title = db.Column(db.String(255), db.ForeignKey('post.title'), primary_key=True, nullable=False)
 
     @classmethod
     def delete_tag(cls, name):
@@ -126,7 +126,7 @@ class Tag(db.Model):
     def add_tags(cls, post_title, tags):
         if tags and post_title:
             for tag in tags:
-                record = cls(name=tag, post_title=post_title)
+                record = cls(tag=tag, post_title=post_title)
                 db.session.add(record)
             db.session.commit()
 
@@ -139,7 +139,7 @@ class Tag(db.Model):
 
     @classmethod
     def get_tags(cls):
-        records = cls.query.distinct(cls.name).all()
-        tags = [record.name for record in records]
+        records = db.session.query(cls.tag).distinct(cls.tag).all()
+        tags = [record.tag for record in records]
         return tags
 

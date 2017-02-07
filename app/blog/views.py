@@ -104,7 +104,7 @@ def post(title):
 @blog.route('/tag/<tag>', methods=['GET'])
 def tag(tag):
     posts = []
-    tag_records = Tag.query.filter_by(name=tag).all()
+    tag_records = Tag.query.filter_by(tag=tag).all()
     post_titles = [tag_record.post_title for tag_record in tag_records]
     for post_title in post_titles:
         post = Post.query.filter_by(title=post_title).first()
