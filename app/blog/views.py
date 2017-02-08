@@ -1,6 +1,7 @@
 from datetime import datetime
 
 from flask import render_template, url_for, flash, redirect, jsonify, request
+from flask_login import login_required
 
 from app.blog.models import Post, Subject, Tag
 from . import blog_blueprint as blog
@@ -15,11 +16,6 @@ def index():
     posts = Post.get_latest_posts()
     tags = Tag.get_tags()
     return render_template('blog/index.html', posts=posts, tags=tags)
-
-
-@blog.route('/manager', methods=['GET'])
-def manager():
-    return  render_template('user/manager.html')
 
 
 @blog.route('/technique', methods=['GET'])
@@ -46,12 +42,12 @@ def thoughts():
     return render_template('blog/posts.html', posts=posts, subject='thoughts')
 
 
-
 @blog.route('/about', methods=['GET'])
 def about():
     return render_template('about.html')
 
 
+@login_required
 @blog.route('/edit', methods=['GET', 'POST'])
 @blog.route('/edit/<title>', methods=['GET', 'POST'])
 def edit(title=None):
@@ -113,6 +109,7 @@ def tag(tag):
     return render_template('blog/tag.html', posts=posts, tag=tag)
 
 
+@login_required
 @blog.route('/init_db', methods=['GET'])
 def init_db():
     Subject.insert_subjects()
@@ -122,6 +119,8 @@ def init_db():
     }
     return jsonify(json)
 
+
+@login_required
 @blog.route('/clear_db', methods=['GET'])
 def clear_db():
     Post.clear()
@@ -132,6 +131,8 @@ def clear_db():
     }
     return jsonify(json)
 
+
+@login_required
 @blog.route('/delete/<title>')
 def delete(title):
     post = Post.get_post_by_title(title)
@@ -139,3 +140,4 @@ def delete(title):
     Post.delete_post_by_title(title)
     flash('Post【' + title + '】 successfully deleted', 'success')
     return redirect(url_for('blog.'+subject))
+
