@@ -34,24 +34,23 @@
         {# post content #}
         <div class="row">
             <div class="col-md-12">
-                <div class="well" style="word-wrap: break-word">
+{#                <div class="well" style="word-wrap: break-word">#}
                     {{ post.content | markdown }}
-                </div>
+{#                </div>#}
             </div>
         </div>
+        <hr>
         <div class="row">
             <div class="col-md-4 pull-left">
-                {{ macros.show_tags(tags=post.get_tag_list()) }}
+                <i class="fa fa-tags"></i> {{ macros.show_tags(tags=post.get_tag_list()) }}
             </div>
             <div class="col-md-4 pull-right">
                 <span class="glyphicon glyphicon-time"></span>
                 Updated at {{ post.modify_time }}
             </div>
         </div>
-        <hr>
+        <br>
         {# comments #}
-        <div class="row">
-        </div>
         <div class="well">
             <span class="label label-primary">留言</span>
             <form role="form">
