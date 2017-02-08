@@ -11,10 +11,10 @@ class Config:
     SQLALCHEMY_TRACK_MODIFICATIONS = True
 
     SUBJECTS = [
-        ('technique', u'技术'),
-        ('environment', u'环境'),
-        ('resources', u'资源'),
-        ('thoughts', u'思考')
+        ('technique', '技术'),
+        ('environment', '环境'),
+        ('resources', '资源'),
+        ('thoughts', '思考')
     ]
 
     @staticmethod

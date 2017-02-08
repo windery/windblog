@@ -2,14 +2,6 @@
 {% import 'macros/macros.html' as macros %}
 {% block page_content %}
     <div class="container">
-        {#  post option buttons  #}
-        <div class="row">
-            <div class="pull-right col-md-4">
-                <a class="btn btn-info" href={{ url_for('blog.edit') }}>New Post</a>
-                <a class="btn btn-info" href={{ url_for('blog.edit', title=post.title) }}>Edit Post</a>
-                <a class="btn btn-info" href="{{ url_for('blog.delete', title=post.title) }}">Delete Post</a>
-            </div>
-        </div>
         {# post title #}
         <div class="row">
             <div class="col-md-12">

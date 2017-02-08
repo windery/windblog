@@ -1,6 +1,6 @@
 <div class="navbar navbar-default navbar-fixed-top" role="navigation">
     <div class="container">
-        <a href="https://github.com/windery"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/52760788cde945287fbb584134c4cbc2bc36f904/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f77686974655f6666666666662e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_white_ffffff.png"></a>
+{#        <a href="https://github.com/windery"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/52760788cde945287fbb584134c4cbc2bc36f904/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f77686974655f6666666666662e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_white_ffffff.png"></a>#}
         <div class="navbar-header">
             <button type="button" class="navbar-toggle"
                     data-toggle="collapse" data-target=".navbar-collapse">
@@ -22,10 +22,28 @@
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 {% if current_user.is_authenticated %}
-                    <li><a href="{{ url_for('user.profile') }}"><strong> {{ current_user.username }}</strong></a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true">
+                            <i class="fa fa-user"></i> <strong>{{ current_user.username }}</strong>
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-left">
+                            <li><a href="{{ url_for('user.manage', target='blog') }}"><i class="fa fa-file-text-o"></i> <strong>Blog</strong></a> </li>
+                            <li><a href="{{ url_for('user.manage', target='file') }}"><i class="fa fa-file"></i> <strong>File</strong></a> </li>
+                            <li><a href="{{ url_for('user.logout') }}"><i class="fa fa-sign-out"></i> <strong>Sign out</strong></a> </li>
+                        </ul>
+                    </li>
                 {% else %}
-                    <li><a href="{{ url_for('user.login') }}"><strong>Login</strong></a></li>
-                    <li><a href="{{ url_for('user.register') }}"><strong>Register</strong></a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true">
+                            <i class="fa fa-user"></i><strong>Sign In</strong>
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-left">
+                            <li><a href="{{ url_for('user.login') }}"><i class="fa fa-sign-in"></i> <strong>Sign in</strong></a></li>
+                            <li><a href="{{ url_for('user.register') }}"><i class="fa fa-registered"></i> <strong>Register</strong></a></li>
+                        </ul>
+                    </li>
                 {% endif %}
             </ul>
         </div>

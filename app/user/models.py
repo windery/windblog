@@ -8,12 +8,6 @@ from .permissions import Permissions
 from app import login_manager
 
 
-class Follow(db.Model):
-    follower_id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
-    followed_id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
-    follow_time = db.Column(db.DateTime, default=datetime.utcnow)
-
-
 class User(db.Model, UserMixin):
     __tablename__ = 'user'
     id = db.Column(db.Integer, primary_key=True)
@@ -28,16 +22,6 @@ class User(db.Model, UserMixin):
     role_id = db.Column(db.Integer, db.ForeignKey('role.id'))
 
     comment = db.relationship('Comment', backref='user')
-    follwer = db.relationship('Follow',
-                              foreign_keys=[Follow.followed_id],
-                              backref=db.backref('follower', lazy='joined'),
-                              lazy='dynamic',
-                              cascade='all, delete-orphan')
-    followed = db.relationship('Follow',
-                               foreign_keys=[Follow.follower_id],
-                               backref=db.backref('followed', lazy='joined'),
-                               lazy='dynamic',
-                               cascade='all, delete-orphan')
 
     @property
     def password(self):
@@ -54,6 +38,7 @@ class User(db.Model, UserMixin):
     def load_user(user_id):
         return User.query.get(int(user_id))
 
+
 class Role(db.Model):
     __tablename__ = 'role'
     id = db.Column(db.Integer, primary_key=True)
@@ -68,13 +53,6 @@ class Role(db.Model):
             'user':
                 Permissions.WRITE_ARTICLES
                     | Permissions.COMMENT
-                    | Permissions.FOLLOW,
-            'professional_user':
-                Permissions.WRITE_ARTICLES
-                    | Permissions.COMMENT
-                    | Permissions.FOLLOW
-                    | Permissions.FILE_SAVE
-                    | Permissions.PROXY_DOWNLOAD
         }
         for role_name in roles:
             role = Role.query.filter_by(role_name=role_name).first()
@@ -86,6 +64,5 @@ class Role(db.Model):
 
     def __repr__(self):
         return '<Role %r>' % self.role_name
-
 
 
