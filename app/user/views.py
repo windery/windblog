@@ -1,7 +1,7 @@
 from . import user_blueprint as user
 from app import db
 from app.blog.models import Post
-from flask import render_template, redirect, url_for, request, flash
+from flask import render_template, redirect, url_for, request, flash, jsonify
 from flask_login import login_user, logout_user, login_required
 from .forms import LoginForm, RegisterForm
 from .models import User
@@ -43,6 +43,7 @@ def register():
     return render_template('user/register.html', form=form)
 
 
+@login_required
 @user.route('/manage/<target>', methods=['GET'])
 def manage(target='blog'):
     if target == 'blog':
@@ -50,3 +51,25 @@ def manage(target='blog'):
         return render_template('user/manage_posts.html', posts=posts)
     elif target == 'file':
         return render_template('user/manage_files.html')
+
+
+@login_required
+@user.route('/generate_fake_users', methods=['GET'])
+def generate_fake_users():
+    User.generate_fake()
+    json = {
+        'code': 0,
+        'message': 'generate fake users success'
+    }
+    return jsonify(json)
+
+
+@login_required
+@user.route('/generate_fake_posts', methods=['GET'])
+def generate_fake_posts():
+    Post.generate_fake()
+    json = {
+        'code': 0,
+        'message': 'generate fake posts success'
+    }
+    return jsonify(json)

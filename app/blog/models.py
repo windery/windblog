@@ -5,6 +5,8 @@ from app import db
 from config import Config
 from datetime import datetime
 from sqlalchemy import desc, distinct
+from sqlalchemy.exc import IntegrityError
+from random import seed
 
 
 class Post(db.Model):
@@ -60,9 +62,25 @@ class Post(db.Model):
         cls.query.delete()
         db.session.commit()
 
+    @staticmethod
+    def generate_fake(count=100):
+        from forgery_py import lorem_ipsum, date
+
+        seed()
+        for i in range(count):
+            post = Post()
+            post.subject_name = 'technique'
+            post.title = lorem_ipsum.sentence()[0:99]
+            post.content = lorem_ipsum.paragraph()
+            post.create_time = date.date(past=True)
+            post.tags = 'a,b,c'
+            if Post.query.filter_by(title=post.title).first() is None:
+                db.session.add(post)
+        db.session.commit()
 
     def __repr__(self):
         return '<Post %r>' % self.title
+
 
 class Comment(db.Model):
     __tablename__ = 'comment'

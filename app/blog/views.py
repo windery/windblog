@@ -2,6 +2,7 @@ from datetime import datetime
 
 from flask import render_template, url_for, flash, redirect, jsonify, request
 from flask_login import login_required
+from sqlalchemy.exc import IntegrityError
 
 from app.blog.models import Post, Subject, Tag
 from . import blog_blueprint as blog
@@ -83,7 +84,10 @@ def edit(title=None):
             post.tags=post_form.tags.data
             post.modify_time=datetime.utcnow()
             flash('Post【' + title + '】 sucessfully updated', 'success')
-        db.session.commit()
+        try:
+            db.session.commit()
+        except IntegrityError:
+            db.session.rollback()
         Tag.update_tags(title, tags)
         return redirect(url_for('.post', title=title))
     elif request.method is 'POST':

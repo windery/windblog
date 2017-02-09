@@ -6,6 +6,9 @@ from flask_login import UserMixin
 from datetime import datetime
 from .permissions import Permissions
 from app import login_manager
+from random import seed
+from sqlalchemy.exc import IntegrityError
+from sqlalchemy import or_
 
 
 class User(db.Model, UserMixin):
@@ -38,6 +41,25 @@ class User(db.Model, UserMixin):
     def load_user(user_id):
         return User.query.get(int(user_id))
 
+    @staticmethod
+    def generate_fake(count=100):
+        from forgery_py import lorem_ipsum, date, internet
+
+        seed()
+        for i in range(count):
+            u = User()
+            u.email = internet.email_address()
+            u.username = internet.user_name(True)
+            u.password = lorem_ipsum.word()
+            u.register_time = date.date()
+            u.about = lorem_ipsum.sentence()
+            if User.query.filter(or_(User.email==u.email, User.username==u.username)).first() is None:
+                db.session.add(u)
+        try:
+            db.session.commit()
+        except IntegrityError:
+            db.session.rollback()
+
 
 class Role(db.Model):
     __tablename__ = 'role'
@@ -60,7 +82,10 @@ class Role(db.Model):
                 role = Role()
             role.permission = roles[role_name]
             db.session.add(role)
-        db.session.commit()
+        try:
+            db.session.commit()
+        except IntegrityError:
+            db.session.rollback()
 
     def __repr__(self):
         return '<Role %r>' % self.role_name
