@@ -119,8 +119,8 @@
                             <td>{{ post.subject_name }}</td>
                             <td>{{ post.title }}</td>
                             <td>{{ post.create_time.date() }}</td>
-                            <td><a class="btn btn-warning col-md-2 col-md-offset-4" href={{ url_for('blog.edit', title=post.title) }}>Edit</a>
-                                <a class="btn btn-danger col-md-2 col-md-offset-2" href="{{ url_for('blog.delete', title=post.title) }}">Delete</a></td>
+                            <td><a class="btn btn-sm btn-warning col-md-3 col-md-offset-2" href={{ url_for('blog.edit', title=post.title) }}>Edit</a>
+                                <a class="btn btn-sm btn-danger col-md-3 col-md-offset-2" href="{{ url_for('blog.delete', title=post.title) }}">Delete</a></td>
                         </tr>
                     {% endfor %}
                 </table>
