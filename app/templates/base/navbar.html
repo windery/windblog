@@ -20,31 +20,34 @@
                 {% endfor %}
                 <li><a href="/about"><strong>About</strong></a></li>
             </ul>
-            <ul class="nav navbar-nav navbar-right">
-                {% if current_user.is_authenticated %}
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true">
-                            <i class="fa fa-user"></i> <strong>{{ current_user.username }}</strong>
-                            <span class="caret"></span>
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-left">
-                            <li><a href="{{ url_for('user.manage', target='blog') }}"><i class="fa fa-file-text-o"></i> <strong>Blog</strong></a> </li>
-                            <li><a href="{{ url_for('user.manage', target='file') }}"><i class="fa fa-file"></i> <strong>File</strong></a> </li>
-                            <li><a href="{{ url_for('user.logout') }}"><i class="fa fa-sign-out"></i> <strong>Sign out</strong></a> </li>
-                        </ul>
-                    </li>
-                {% else %}
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true">
-                            <i class="fa fa-user"></i><strong>Sign In</strong>
-                            <span class="caret"></span>
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-left">
-                            <li><a href="{{ url_for('user.login') }}"><i class="fa fa-sign-in"></i> <strong>Sign in</strong></a></li>
-                            <li><a href="{{ url_for('user.register') }}"><i class="fa fa-registered"></i> <strong>Register</strong></a></li>
-                        </ul>
-                    </li>
-                {% endif %}
+            <ul class="nav navbar-nav navbar-right text-center">
+{#                {% if current_user.is_authenticated %}#}
+{#                    <li class="dropdown">#}
+{#                        <a href="#" class="dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true">#}
+{#                            <i class="fa fa-user"></i> <strong>{{ current_user.username }}</strong>#}
+{#                            <span class="caret"></span>#}
+{#                        </a>#}
+{#                        <ul class="dropdown-menu dropdown-menu-left">#}
+{#                            <li><a href="{{ url_for('user.manage', target='blog') }}"><i class="fa fa-file-text-o"></i> <strong>Blog</strong></a> </li>#}
+{#                            <li><a href="{{ url_for('user.manage', target='file') }}"><i class="fa fa-file"></i> <strong>File</strong></a> </li>#}
+{#                            <li><a href="{{ url_for('user.logout') }}"><i class="fa fa-sign-out"></i> <strong>Sign out</strong></a> </li>#}
+{#                        </ul>#}
+{#                    </li>#}
+{#                {% else %}#}
+{#                    <li class="dropdown">#}
+{#                        <a href="#" class="dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true">#}
+{#                            <i class="fa fa-user"></i><strong>Sign In</strong>#}
+{#                            <span class="caret"></span>#}
+{#                        </a>#}
+{#                        <ul class="dropdown-menu dropdown-menu-left">#}
+{#                            <li><a href="{{ url_for('user.login') }}"><i class="fa fa-sign-in"></i> <strong>Sign in</strong></a></li>#}
+{#                            <li><a href="{{ url_for('user.register') }}"><i class="fa fa-registered"></i> <strong>Register</strong></a></li>#}
+{#                        </ul>#}
+{#                    </li>#}
+{#                {% endif %}#}
+                <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=200 height=52 src="//music.163.com/outchain/player?type=0&id=624581494&auto=0&height=32"></iframe>
+                &nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;
             </ul>
         </div>
     </div>
