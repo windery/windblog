@@ -2,10 +2,13 @@
 {% import 'bootstrap/wtf.html' as wtf %}
 
 {% block title %}
-    Flasky - Login
+    Flasky - Administrator Login
 {% endblock %}
 
 {% block page_content %}
+    <h1 class="page-header">
+        Administrator Login
+    </h1>
     <div class="col-md-4">
         {{ wtf.quick_form(form) }}
     </div>

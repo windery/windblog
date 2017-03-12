@@ -6,11 +6,9 @@
 {% endblock %}
 
 {% block page_content %}
-    <div class="col-md-4">
-        Administrator
-
-    </div>
-    <hr>
+    <h1 class="page-header">
+        Administrator Management
+    </h1>
     <a class="btn btn-info" href={{ url_for('user.manage', target='blog') }}>Blogs Management</a>
     <a class="btn btn-info" href="{{ url_for('user.manage', target='file') }}">File Management</a>
     <a class="btn btn-danger" href="{{ url_for('user.logout') }}">Logout</a>
