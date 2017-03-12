@@ -10,7 +10,7 @@ from .models import User
 def login():
     form = LoginForm()
     if form.validate_on_submit():
-        user = User.query.filter_by(username='admin').first()
+        user = User.query.filter_by(username='administrator').first()
         if user is None:
             flash('Please initialize your app first, and make sure password configuration is ok!', 'danger')
         elif user.verify_password(form.password.data):
