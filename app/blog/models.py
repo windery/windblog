@@ -4,6 +4,7 @@
 from app import db
 from config import Config
 from datetime import datetime
+from flask import current_app
 from sqlalchemy import desc, distinct
 from sqlalchemy.exc import IntegrityError
 from random import seed
@@ -41,6 +42,8 @@ class Post(db.Model):
 
     @classmethod
     def get_latest_posts_by_subject(cls, subject_name):
+        if subject_name is None:
+            return cls.get_latest_posts()
         return cls.query.filter_by(subject_name=subject_name).order_by(desc(Post.modify_time)).all()
 
     @classmethod
@@ -50,6 +53,18 @@ class Post(db.Model):
     @classmethod
     def get_latest_posts(cls):
         return cls.query.order_by(desc(cls.create_time)).limit(100).all()
+
+    @classmethod
+    def get_pagination(cls, page):
+        posts_per_page = current_app.config['WINDBLOG_POSTS_PER_PAGE']
+        pagination = cls.query.order_by(cls.create_time.desc()).paginate(page, per_page=posts_per_page, error_out=False)
+        return pagination
+
+    @classmethod
+    def get_pagination_by_subject(cls, subject, page):
+        posts_per_page = current_app.config['WINDBLOG_POSTS_PER_PAGE']
+        pagination = cls.query.filter_by(subject_name=subject).order_by(cls.create_time.desc()).paginate(page, per_page=posts_per_page, error_out=False)
+        return pagination
 
     def get_brief_content(self):
         return str(self.content)[0:100]

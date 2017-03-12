@@ -33,7 +33,7 @@
     <div class="col-md-9">
         <a class="btn-xs btn-danger" href="{{ url_for('blog.about') }}"><b>Windery</b></a>
         posted under
-        <a class="btn-xs btn-warning" href="{{ url_for('blog.'+post.subject_name) }}"><b>{{ post.subject_name }}</b></a>
+        <a class="btn-xs btn-warning" href="{{ url_for('blog.posts', subject=post.subject_name) }}"><b>{{ post.subject_name }}</b></a>
     </div>
     <div class="col-md-3 text-muted text-right">
         <i class="fa fa-clock-o"></i>{{ post.create_time }}
@@ -145,5 +145,33 @@
                 </table>
             {% endif %}
         </div>
+    </div>
+{% endmacro %}
+
+{% macro show_pagination_widget(pagination, endpoint) %}
+    <div class="text-center">
+        <ul class="pagination">
+            <li {% if not pagination.has_prev %} class="disabled"{% endif %}>
+                <a href="{% if pagination.has_prev %} {{ url_for(endpoint, page = pagination.page - 1) }}{% else %}#{% endif %}">&laquo;</a>
+            </li>
+            {% for page in pagination.iter_pages() %}
+                {% if page %}
+                    {% if page == pagination.page %}
+                        <li class="active">
+                            <a href="{{ url_for(endpoint, page=page, **kwargs) }}">{{ page }}</a>
+                        </li>
+                    {% else %}
+                        <li>
+                            <a href="{{ url_for(endpoint, page=page, **kwargs) }}">{{ page }}</a>
+                        </li>
+                    {% endif %}
+                {% else %}
+                    <li class="disabled"><a href="#">&hellip;</a></li>
+                {% endif %}
+            {% endfor %}
+            <li{% if not pagination.has_next %} class="disabled"> {% endif %}
+            <a href="{% if pagination.has_next %} {{ url_for(endpoint, page = pagination.page + 1, **kwargs) }} {% else %}#{% endif %}">&raquo;</a>
+            </li>
+        </ul>
     </div>
 {% endmacro %}

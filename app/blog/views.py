@@ -13,34 +13,24 @@ from .. import db
 @blog.route('/')
 @blog.route('/home')
 @blog.route('/index')
-def index():
-    posts = Post.get_latest_posts()
+@blog.route('/index/<page>')
+def index(page=1):
+    if isinstance(page, str):
+        page = int(page)
+    pagination = Post.get_pagination(page)
+    posts = pagination.items
     tags = Tag.get_tags()
-    return render_template('blog/index.html', posts=posts, tags=tags)
+    return render_template('blog/index.html', posts=posts, pagination=pagination, tags=tags)
 
 
-@blog.route('/technique', methods=['GET'])
-def technique():
-    posts = Post.get_latest_posts_by_subject(subject_name='technique')
-    return render_template('blog/posts.html', posts=posts, subject='technique')
-
-
-@blog.route('/environment', methods=['GET'])
-def environment():
-    posts = Post.get_latest_posts_by_subject(subject_name='environment')
-    return render_template('blog/posts.html', posts=posts, subject='environment')
-
-
-@blog.route('/resources', methods=['GET'])
-def resources():
-    posts = Post.get_latest_posts_by_subject(subject_name='resources')
-    return render_template('blog/posts.html', posts=posts, subject='resources')
-
-
-@blog.route('/thoughts', methods=['GET'])
-def thoughts():
-    posts = Post.get_latest_posts_by_subject(subject_name='thoughts')
-    return render_template('blog/posts.html', posts=posts, subject='thoughts')
+@blog.route('/posts/<subject>')
+@blog.route('/posts/<subject>/<page>')
+def posts(subject=None, page=1):
+    if isinstance(page, str):
+        page = int(page)
+    pagination = Post.get_pagination_by_subject(subject=subject, page=page)
+    posts = pagination.items
+    return render_template('blog/posts.html', posts=posts, pagination=pagination, subject=subject)
 
 
 @blog.route('/about', methods=['GET'])

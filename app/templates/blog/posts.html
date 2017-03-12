@@ -6,4 +6,5 @@
         {{ subject.title() }} Posts
     </h1>
     {{ macros.show_posts(posts) }}
+    {{ macros.show_pagination_widget(pagination=pagination, endpoint='blog.posts', subject=subject) }}
 {% endblock %}

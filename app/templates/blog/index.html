@@ -9,7 +9,20 @@
         {{ macros.show_posts(posts) }}
     </div>
     <div class="col-md-3 col-md-offset-1">
+        <br>
+        <br>
         {{ macros.show_tags_panel(tags=tags) }}
+        <br>
         {{ macros.show_links_panel() }}
+    </div>
+
+    <div class="col-md-8 text-center">
+        <br>
+        <br>
+        <br>
+        {{ macros.show_pagination_widget(pagination=pagination, endpoint='blog.index') }}
+        <br>
+        <br>
+        <br>
     </div>
 {% endblock %}
