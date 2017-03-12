@@ -6,11 +6,44 @@
 {% endblock %}
 
 {% block page_content %}
-    <h1 class="page-header">
-        Administrator Management
-    </h1>
-    <a class="btn btn-info" href={{ url_for('user.manage', target='blog') }}>Blogs Management</a>
-    <a class="btn btn-info" href="{{ url_for('user.manage', target='file') }}">File Management</a>
-    <a class="btn btn-danger" href="{{ url_for('user.logout') }}">Logout</a>
+    <br>
+    <div class="col-md-8">
+        <h1>
+            Administrator Home
+        </h1>
+    </div>
+
+    <div class="col-md-4 pull-right text-right" style="line-height: 80px;">
+        <a class="btn btn-danger" href="{{ url_for('user.logout') }}">Logout</a>
+    </div>
+
+
+    <div class="col-md-12">
+        <hr>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h2 class="panel-title"><strong>Tools</strong></h2>
+            </div>
+            <div class="panel-body">
+                <a class="btn btn-info col-md-2 col-md-offset-1" href="#">Download Proxy</a>
+                <a class="btn btn-info col-md-2 col-md-offset-2" href="#">Dropbox</a>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="col-md-12">
+        <hr>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h2 class="panel-title"><strong>Management</strong></h2>
+            </div>
+            <div class="panel-body">
+                <a class="btn btn-info col-md-2 col-md-offset-1" href={{ url_for('user.manage', target='blog') }}>Blogs Management</a>
+                <a class="btn btn-info col-md-2 col-md-offset-2" href="{{ url_for('user.manage', target='file') }}">File Management</a>
+            </div>
+        </div>
+    </div>
+
 
 {% endblock %}
