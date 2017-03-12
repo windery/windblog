@@ -7,11 +7,11 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 
 class Config:
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'pandoo'
-    SQLALCHEMY_DATABASE_URI = os.getenv('BLOG_DB_URI')
+    SQLALCHEMY_DATABASE_URI = os.getenv('WINDBLOG_DB_URI')
     SQLALCHEMY_COMMIT_ON_TEARDOWN = True
     SQLALCHEMY_TRACK_MODIFICATIONS = True
-    POSTS_PER_PAGE = os.getenv('POSTS_PER_PAGE') or 10
-    BLOG_ADMIN_PASSWORD = os.getenv('BLOG_ADMIN_PASSWORD') or 'admin'
+    POSTS_PER_PAGE = os.getenv('WINDBLOG_POSTS_PER_PAGE') or 10
+    BLOG_ADMIN_PASSWORD = os.getenv('WINDBLOG_ADMINISTRATOR_PASSWORD') or None
 
     SUBJECTS = [
         ('technique', '技术'),
@@ -30,6 +30,7 @@ class DevelopmentConfig(Config):
 
 
 class ProductionConfig(Config):
+    DEBUG = False
 
     @classmethod
     def init_app(cls, app):
