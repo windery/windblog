@@ -126,13 +126,21 @@ def delete(title):
 @blog.route('/init')
 def init():
     # init db
+    json = {
+        'code': 0,
+        'message': 'Init windblog success'
+    }
+
     from app.blog.models import Subject
     Subject.insert_subjects_if_not_exists()
     from app.user.models import User
-    User.insert_administrator_in_not_exists()
-    json = {
-        'code': 0,
-        'message': 'generate fake posts success'
-    }
+
+    try:
+        User.insert_administrator_in_not_exists()
+    except AttributeError as e:
+        json = {
+            'code': -1,
+            'message': 'Init administrator failed, message: %s' % e
+        }
     return jsonify(json)
 

@@ -31,14 +31,13 @@ class User(db.Model, UserMixin):
 
     @staticmethod
     def insert_administrator_in_not_exists():
-        administrator = User.query.filter_by(username='admin').first()
+        administrator = User.query.filter_by(username='administrator').first()
         if administrator is None:
             administrator = User()
-            administrator.username = 'admin'
+            administrator.username = 'administrator'
             admin_password = app.config['BLOG_ADMIN_PASSWORD']
             if admin_password is None:
-                app.logger.error('when adding administrator, no valid password set, program will exit')
-                exit(-1);
+                raise AttributeError('Administrator password not set yet.')
             administrator.password = admin_password
             db.session.add(administrator)
             try:
