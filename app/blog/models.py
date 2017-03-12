@@ -60,7 +60,10 @@ class Post(db.Model):
     @classmethod
     def clear(cls):
         cls.query.delete()
-        db.session.commit()
+        try:
+            db.session.commit()
+        except IntegrityError:
+            db.session.rollback()
 
     @staticmethod
     def generate_fake(count=100):
@@ -76,7 +79,10 @@ class Post(db.Model):
             post.tags = 'a,b,c'
             if Post.query.filter_by(title=post.title).first() is None:
                 db.session.add(post)
-        db.session.commit()
+        try:
+            db.session.commit()
+        except IntegrityError:
+            db.session.rollback()
 
     def __repr__(self):
         return '<Post %r>' % self.title
@@ -87,7 +93,7 @@ class Comment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     post_id = db.Column(db.Integer, db.ForeignKey('post.id'))
     parent_id = db.Column(db.Integer, db.ForeignKey('comment.id'))
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    # user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     content = db.Column(db.TEXT)
     email = db.Column(db.String(100))
     time = db.Column(db.Integer)
@@ -116,7 +122,10 @@ class Subject(db.Model):
     def clear():
         Post.query.delete()
         Subject.query.delete()
-        db.session.commit()
+        try:
+            db.session.commit()
+        except IntegrityError:
+            db.session.rollback()
 
 
 class Tag(db.Model):

@@ -6,17 +6,9 @@ import os
 from flask_migrate import Migrate, MigrateCommand
 from flask_script import Manager, Shell
 from flaskext.markdown import Markdown
-
 from app import create_app, db
-from app.blog import models
 
 app = create_app(os.getenv('BLOG_CONFIG') or 'default')
-
-
-@app.context_processor
-def subject_processor():
-    subjects = models.Subject.query.all()
-    return dict(subjects=subjects)
 
 manager = Manager(app)
 migrate = Migrate(app, db, render_as_batch=True)

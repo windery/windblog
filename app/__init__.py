@@ -14,6 +14,7 @@ login_manager = LoginManager()
 login_manager.session_protection = 'strong'
 login_manager.login_view = 'user.login'
 
+
 def create_app(config_name):
     app = Flask(__name__)
     app.config.from_object(config[config_name])
@@ -28,11 +29,13 @@ def create_app(config_name):
     from .user import user_blueprint
     app.register_blueprint(user_blueprint)
 
+    @app.context_processor
+    def subject_processor():
+        from app.blog import models
+        subjects = models.Subject.query.all()
+        return dict(subjects=subjects)
+
     return app
 
-
-def init_subjects():
-    from app.blog.models import Subject
-    Subject.insert_subjects()
 
 
