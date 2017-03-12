@@ -2,9 +2,8 @@
 # -*- coding:utf8 -*-
 
 from flask_wtf import FlaskForm
-from wtforms import IntegerField, StringField, PasswordField, SelectField, \
-     TextAreaField, SubmitField, BooleanField
-from wtforms.validators import Required, Length, Email, Regexp, EqualTo, NumberRange, DataRequired
+from wtforms import StringField, SelectField, TextAreaField, SubmitField
+from wtforms.validators import Length, DataRequired
 from config import Config
 
 

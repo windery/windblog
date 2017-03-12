@@ -4,7 +4,7 @@ from flask import render_template, url_for, flash, redirect, jsonify, request
 from flask_login import login_required
 from sqlalchemy.exc import IntegrityError
 
-from app.blog.models import Post, Subject, Tag
+from app.blog.models import Post, Tag
 from . import blog_blueprint as blog
 from .forms import PostForm
 from .. import db
@@ -114,29 +114,6 @@ def tag(tag):
 
 
 @login_required
-@blog.route('/init_db', methods=['GET'])
-def init_db():
-    Subject.insert_subjects()
-    json = {
-        'code': 0,
-        'message': "Init subjects in db success"
-    }
-    return jsonify(json)
-
-
-@login_required
-@blog.route('/clear_db', methods=['GET'])
-def clear_db():
-    Post.clear()
-    Subject.clear()
-    json = {
-        'code': 0,
-        'message': 'Clear subjects in db success'
-    }
-    return jsonify(json)
-
-
-@login_required
 @blog.route('/delete/<title>')
 def delete(title):
     post = Post.get_post_by_title(title)
@@ -144,4 +121,18 @@ def delete(title):
     Post.delete_post_by_title(title)
     flash('Post【' + title + '】 successfully deleted', 'success')
     return redirect(url_for('blog.'+subject))
+
+
+@blog.route('/init')
+def init():
+    # init db
+    from app.blog.models import Subject
+    Subject.insert_subjects_if_not_exists()
+    from app.user.models import User
+    User.insert_administrator_in_not_exists()
+    json = {
+        'code': 0,
+        'message': 'generate fake posts success'
+    }
+    return jsonify(json)
 

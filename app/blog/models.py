@@ -66,7 +66,7 @@ class Post(db.Model):
             db.session.rollback()
 
     @staticmethod
-    def generate_fake(count=100):
+    def insert_fake_posts(count=100):
         from forgery_py import lorem_ipsum, date
 
         seed()
@@ -76,7 +76,8 @@ class Post(db.Model):
             post.title = lorem_ipsum.sentence()[0:99]
             post.content = lorem_ipsum.paragraph()
             post.create_time = date.date(past=True)
-            post.tags = 'a,b,c'
+            tags = [lorem_ipsum.word() for i in range(3)]
+            post.tags = ','.join(tags)
             if Post.query.filter_by(title=post.title).first() is None:
                 db.session.add(post)
         try:
@@ -109,7 +110,7 @@ class Subject(db.Model):
     post = db.relationship('Post', backref=db.backref('subject'), lazy='dynamic')
 
     @staticmethod
-    def insert_subjects():
+    def insert_subjects_if_not_exists():
         subjects = Config.SUBJECTS
         for s in subjects:
             subject = Subject.query.filter_by(name=s[0]).first()
