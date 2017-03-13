@@ -92,15 +92,13 @@ def post(title):
 
 
 @blog.route('/tag/<tag>', methods=['GET'])
-def tag(tag):
-    posts = []
-    tag_records = Tag.query.filter_by(tag=tag).all()
-    post_titles = [tag_record.post_title for tag_record in tag_records]
-    for post_title in post_titles:
-        post = Post.query.filter_by(title=post_title).first()
-        if post:
-            posts.append(post)
-    return render_template('blog/tag.html', posts=posts, tag=tag)
+@blog.route('/tag/<tag>/<page>')
+def tag(tag, page=1):
+    if isinstance(page, str):
+        page = int(page)
+    pagination = Post.get_pagination_by_tag(tag=tag, page=page)
+    posts = pagination.items
+    return render_template('blog/tag.html', posts=posts, pagination=pagination, tag=tag)
 
 
 @login_required

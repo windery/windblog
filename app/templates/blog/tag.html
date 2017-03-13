@@ -6,4 +6,5 @@
  Posts with tag {{ tag }}
 </h1>
 {{ macros.show_posts(posts) }}
+{{ macros.show_pagination_widget(endpoint='blog.tag', pagination=pagination, tag=tag) }}
 {% endblock %}

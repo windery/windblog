@@ -66,6 +66,13 @@ class Post(db.Model):
         pagination = cls.query.filter_by(subject_name=subject).order_by(cls.create_time.desc()).paginate(page, per_page=posts_per_page, error_out=False)
         return pagination
 
+    @classmethod
+    def get_pagination_by_tag(cls, tag, page):
+        posts_per_page = current_app.config['WINDBLOG_POSTS_PER_PAGE']
+        post_titles = db.session.query(Tag.post_title).filter_by(tag=tag).subquery()
+        pagination = cls.query.filter(cls.title.in_(post_titles)).order_by(cls.create_time.desc()).paginate(page, per_page=posts_per_page, error_out=False)
+        return pagination
+
     def get_brief_content(self):
         return str(self.content)[0:100]
 
