@@ -118,7 +118,7 @@ class Comment(db.Model):
     parent_id = db.Column(db.Integer, db.ForeignKey('comment.id'))
     username = db.Column(db.String(100))
     content = db.Column(db.TEXT)
-    comment_time = db.Column(db.Integer)
+    comment_time = db.Column(db.DateTime, default=datetime.utcnow)
     email = db.Column(db.String(255))
 
     parent = db.relationship('Comment', remote_side=parent_id)

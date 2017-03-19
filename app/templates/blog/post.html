@@ -23,22 +23,22 @@
         <br>
         {# post author and subject #}
         <div class="row">
-                <div class="col-md-8">
-                    Posted by <a class="btn-xs btn-danger" href="{{ url_for('.about') }}"><strong>Windery</strong></a>
-                    under <a class="btn-xs btn-primary" href={{ url_for('blog.posts', subject=post.subject_name) }}><strong>{{ post.subject_name }}</strong></a>
-                </div>
-                <div class="col-md-4">
-                    <span class="glyphicon glyphicon-time"></span> Created at </i>{{ post.create_time }}
-                </div>
+            <div class="col-md-8">
+                Posted by <a class="btn-xs btn-danger" href="{{ url_for('.about') }}"><strong>Windery</strong></a>
+                under <a class="btn-xs btn-primary" href={{ url_for('blog.posts', subject=post.subject_name) }}><strong>{{ post.subject_name }}</strong></a>
+            </div>
+            <div class="col-md-4">
+                <span class="glyphicon glyphicon-time"></span> Created at </i>{{ post.create_time }}
+            </div>
         </div>
         <hr>
         <br>
         {# post content #}
         <div class="row">
             <div class="col-md-12">
-{#                <div class="well" style="word-wrap: break-word">#}
-                    {{ post.content | markdown }}
-{#                </div>#}
+                {#                <div class="well" style="word-wrap: break-word">#}
+                {{ post.content | markdown }}
+                {#                </div>#}
             </div>
         </div>
         <hr>
@@ -53,18 +53,37 @@
         </div>
         <br>
         {# comments #}
-        <div class="well">
-            <span class="label label-primary">留言</span>
-            {{ wtf.quick_form(comment_form) }}
-            <form role="form"
-            </form>
-        </div>
+
+        <br>
+        <br>
+        <h3>Comments</h3>
+        <br>
+
         {% for comment in comments %}
-            <div class="well">
-                <h3><i class="fa fa-2x fa-user-circle"></i> {{ comment.username }}</h3>
-                <p>{{ comment.content }}</p>
+            <div class="col-md-12 well">
+                <h4 class="col-md-4">
+                    <i class="fa fa-2x fa-user-circle"></i> {{ comment.username }}
+                </h4>
+                <h4 class="col-md-4 text-right pull-right">
+                    <span class="glyphicon glyphicon-time"></span>
+                    commented at {{ comment.comment_time }}
+                </h4>
+                <div class="col-md-12">
+                    <p>{{ comment.content }}</p>
+                </div>
             </div>
             <hr>
         {% endfor %}
+
+        <div class="col-md-12">
+            <br>
+        <h2>Leave a reply</h2>
+            <br>
+        <div class="well">
+            {{ wtf.quick_form(comment_form) }}
+            <form role="form">
+            </form>
+        </div>
+        </div>
     </div>
 {% endblock %}
