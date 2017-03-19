@@ -4,9 +4,9 @@ from flask import render_template, url_for, flash, redirect, jsonify, request
 from flask_login import login_required
 from sqlalchemy.exc import IntegrityError
 
-from app.blog.models import Post, Tag
+from app.blog.models import Post, Tag, Comment
 from . import blog_blueprint as blog
-from .forms import PostForm
+from .forms import PostForm, CommentForm
 from .. import db
 
 
@@ -85,10 +85,23 @@ def edit(title=None):
     return render_template('blog/edit.html', post_form=post_form, title=title)
 
 
-@blog.route('/post/<title>', methods=['GET'])
+@blog.route('/post/<title>', methods=['GET', 'POST'])
 def post(title):
     post = Post.query.filter_by(title=title).first()
-    return render_template('blog/post.html', post=post)
+    comment_form = CommentForm()
+    if request.method == 'POST':
+       if comment_form.validate_on_submit():
+           comment = Comment()
+           comment.post_id = post.id
+           comment.username = comment_form.username.data
+           comment.content = comment_form.content.data
+           db.session.add(comment)
+           db.session.commit()
+           flash('comment succeeded')
+       else:
+           flash('data not valid, fix them and try again', 'warning')
+    comments = Comment.get_comments_by_post_id(post.id)
+    return render_template('blog/post.html', post=post, comment_form=comment_form, comments=comments)
 
 
 @blog.route('/tag/<tag>', methods=['GET'])

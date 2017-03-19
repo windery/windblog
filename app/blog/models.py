@@ -116,12 +116,17 @@ class Comment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     post_id = db.Column(db.Integer, db.ForeignKey('post.id'))
     parent_id = db.Column(db.Integer, db.ForeignKey('comment.id'))
-    # user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    username = db.Column(db.String(100))
     content = db.Column(db.TEXT)
-    email = db.Column(db.String(100))
-    time = db.Column(db.Integer)
+    comment_time = db.Column(db.Integer)
+    email = db.Column(db.String(255))
 
     parent = db.relationship('Comment', remote_side=parent_id)
+
+    @classmethod
+    def get_comments_by_post_id(cls, post_id):
+        comments = Comment.query.filter_by(post_id=post_id).all()
+        return comments
 
 
 class Subject(db.Model):
@@ -185,4 +190,5 @@ class Tag(db.Model):
         records = db.session.query(cls.tag).distinct(cls.tag).all()
         tags = [record.tag for record in records]
         return tags
+
 

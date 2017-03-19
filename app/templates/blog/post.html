@@ -1,5 +1,7 @@
 {% extends 'base/base.html' %}
 {% import 'macros/macros.html' as macros %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
 {% block page_content %}
     <div class="container">
         {#  post option buttons  #}
@@ -53,8 +55,16 @@
         {# comments #}
         <div class="well">
             <span class="label label-primary">留言</span>
-            <form role="form">
+            {{ wtf.quick_form(comment_form) }}
+            <form role="form"
             </form>
         </div>
+        {% for comment in comments %}
+            <div class="well">
+                <h3><i class="fa fa-2x fa-user-circle"></i> {{ comment.username }}</h3>
+                <p>{{ comment.content }}</p>
+            </div>
+            <hr>
+        {% endfor %}
     </div>
 {% endblock %}
