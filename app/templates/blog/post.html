@@ -51,39 +51,46 @@
                 Updated at {{ post.modify_time }}
             </div>
         </div>
-        <br>
         {# comments #}
 
-        <br>
-        <br>
-        <h3>Comments</h3>
-        <br>
 
-        {% for comment in comments %}
-            <div class="col-md-12 well">
-                <h4 class="col-md-4">
-                    <i class="fa fa-2x fa-user-circle"></i> {{ comment.username }}
-                </h4>
-                <h4 class="col-md-4 text-right pull-right">
-                    <span class="glyphicon glyphicon-time"></span>
-                    commented at {{ comment.comment_time }}
-                </h4>
-                <div class="col-md-12">
-                    <p>{{ comment.content }}</p>
+        {% if comments %}
+            {% for comment in comments %}
+                <br>
+                <br>
+                <h3>Comments</h3>
+                <br>
+                <div class="col-md-12 well">
+                    <h5 class="col-md-4">
+                        <i class="fa fa-2x fa-user-circle"></i> {{ comment.username }}
+                    </h5>
+                    <h5 class="col-md-4 text-right pull-right">
+                        <span class="glyphicon glyphicon-time"></span>
+                        commented at {{ comment.comment_time }}
+                    </h5>
+                    <div class="col-md-12">
+                        <p>{{ comment.content }}</p>
+                    </div>
                 </div>
+                <div class="col-md-12">
+                    <hr>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="col-md-12">
+                <br>
             </div>
-            <hr>
-        {% endfor %}
+        {% endif %}
 
         <div class="col-md-12">
             <br>
-        <h2>Leave a reply</h2>
+            <h2>Leave a reply</h2>
             <br>
-        <div class="well">
-            {{ wtf.quick_form(comment_form) }}
-            <form role="form">
-            </form>
-        </div>
+            <div class="well">
+                {{ wtf.quick_form(comment_form) }}
+                <form role="form">
+                </form>
+            </div>
         </div>
     </div>
 {% endblock %}
