@@ -121,7 +121,7 @@ def delete(title):
     subject = post.subject_name
     Post.delete_post_by_title(title)
     flash('Post【' + title + '】 successfully deleted', 'success')
-    return redirect(url_for('blog.'+subject))
+    return redirect(request.values.get('next') or url_for('blog.posts', subject=subject))
 
 
 @blog.route('/init')
