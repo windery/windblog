@@ -97,7 +97,7 @@ def post(title):
            comment.content = comment_form.content.data
            db.session.add(comment)
            db.session.commit()
-           flash('comment succeeded')
+           flash('comment succeeded', 'success')
        else:
            flash('data not valid, fix them and try again', 'warning')
     comments = Comment.get_comments_by_post_id(post.id)
