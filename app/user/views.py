@@ -1,11 +1,13 @@
 import os
-from . import user_blueprint as user
-from flask import render_template, redirect, url_for, request, flash, current_app, send_from_directory
+from flask import render_template, redirect, url_for, request, flash, current_app, send_from_directory, Response, stream_with_context
 from flask_login import login_user, logout_user, login_required
 from werkzeug.utils import secure_filename
 from pathlib import Path
+from requests import get
+
+from . import user_blueprint as user
 from app.blog.models import Post
-from .forms import LoginForm, FileForm
+from .forms import LoginForm, FileForm, DownloadProxyForm
 from .models import User
 
 
@@ -104,3 +106,24 @@ def delete_file(filename=None):
     file.unlink()
     flash('file ' + filename + ' deleted', 'success')
     return redirect(url_for('user.manage', target='file'))
+
+
+@login_required
+@user.route('/download_proxy', methods=['GET', 'POST'])
+def download_proxy():
+    form = DownloadProxyForm()
+    if request.method == 'POST':
+        if form.validate_on_submit():
+            url = form.url.data
+            filename = url.split('/')[-1]
+            if url is None:
+                flash('url empty')
+                return redirect(url_for('user.download_proxy'))
+            req = get(url, stream=True)
+            response = Response(stream_with_context(req.iter_content(chunk_size=1024*1024)), content_type=req.headers['content-type'])
+            response.headers['Content-Disposition'] = 'attachment;filename=%s' % filename
+            return response
+        else:
+            flash('please check the url and try again', 'warning')
+    return render_template('user/download_proxy.html', form=form)
+
