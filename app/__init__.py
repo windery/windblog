@@ -1,12 +1,16 @@
 #!venv/bin/python3
 # -*- coding:utf8 -*-
 
+import os
+import logging
+
 from flask import Flask
 from flask_bootstrap import Bootstrap
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from flask_migrate import Migrate
 from flaskext.markdown import Markdown
+from logging.handlers import RotatingFileHandler
 
 from config import config
 
@@ -30,6 +34,17 @@ def create_app(config_name):
     app.config.from_object(config[config_name])
     config[config_name].init_app(app)
 
+    # logging
+    if not os.path.isdir('log'):
+        os.mkdir('log')
+    file_handler = RotatingFileHandler('log/windblog.log', maxBytes=1024*1024, backupCount=10)
+    file_handler.setLevel(logging.DEBUG)
+    str_format = '[%(asctime)s] p%(process)s [%(name)s:%(lineno)d] %(levelname)s - %(message)s'
+    time_format = '%m-%d %H:%M:%S'
+    formatter = logging.Formatter(str_format, time_format)
+    file_handler.setFormatter(formatter)
+    app.logger.addHandler(file_handler)
+
     # init plugins
     bootstrap.init_app(app)
     db.init_app(app)
@@ -49,6 +64,9 @@ def create_app(config_name):
         from app.blog import models
         subjects = models.Subject.query.all()
         return dict(subjects=subjects)
+
+    app.logger.info('windblog app created.')
+
 
     return app
 

@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from flask import render_template, url_for, flash, redirect, jsonify, request
+from flask import render_template, url_for, flash, redirect, jsonify, request, logging
 from flask_login import login_required
 from sqlalchemy.exc import IntegrityError
 

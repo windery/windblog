@@ -65,6 +65,8 @@ def upload_file():
             file = form.file.data
             filename = secure_filename(file.filename)
             upload_folder = current_app.config['WINDBLOG_UPLOAD_FOLDER']
+            if not os.path.isdir(upload_folder):
+                os.mkdir(upload_folder)
             file.save(os.path.join(upload_folder, filename))
             flash('File[' + filename + '] uploaded.', 'success')
         else:
