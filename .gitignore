@@ -3,3 +3,10 @@ venv
 migrations
 *.sqlite
 blog.log
+log/*
+.idea/
+__pycache__/
+app/__pycache__/
+app/blog/__pycache__/
+app/user/__pycache__/
+log/
