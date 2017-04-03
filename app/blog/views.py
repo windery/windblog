@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from flask import render_template, url_for, flash, redirect, jsonify, request, logging
+from flask import render_template, url_for, flash, redirect, jsonify, request, current_app as blog_app
 from flask_login import login_required
 from sqlalchemy.exc import IntegrityError
 
@@ -13,10 +13,8 @@ from .. import db
 @blog.route('/')
 @blog.route('/home')
 @blog.route('/index')
-@blog.route('/index/<page>')
+@blog.route('/index/<int:page>')
 def index(page=1):
-    if isinstance(page, str):
-        page = int(page)
     pagination = Post.get_pagination(page)
     posts = pagination.items
     tags = Tag.get_tags()
@@ -24,10 +22,8 @@ def index(page=1):
 
 
 @blog.route('/posts/<subject>')
-@blog.route('/posts/<subject>/<page>')
+@blog.route('/posts/<subject>/<int:page>')
 def posts(subject=None, page=1):
-    if isinstance(page, str):
-        page = int(page)
     pagination = Post.get_pagination_by_subject(subject=subject, page=page)
     posts = pagination.items
     return render_template('blog/posts.html', posts=posts, pagination=pagination, subject=subject)
@@ -35,6 +31,7 @@ def posts(subject=None, page=1):
 
 @blog.route('/about', methods=['GET'])
 def about():
+    blog_app.logger.info(request.method + ' ' + request.remote_addr + ' accessed ' + request.path )
     return render_template('about.html')
 
 
@@ -53,6 +50,7 @@ def edit(title=None):
             post_form.content.data = post.content
             post_form.tags.data = post.tags
         post_form.update = True
+        blog_app.logger.info('get post with title [%s] success' % title)
     if post_form.validate_on_submit():
         title = post_form.title.data
         tags = post_form.tags.data
@@ -76,12 +74,14 @@ def edit(title=None):
             flash('Post【' + title + '】 sucessfully updated', 'success')
         try:
             db.session.commit()
-        except IntegrityError:
+        except IntegrityError as e:
             db.session.rollback()
+            blog_app.logger.error('db error when adding post, message : %s' % e)
         Tag.update_tags(title, tags)
         return redirect(url_for('.post', title=title))
     elif request.method is 'POST':
         flash('Some data not valid, fix them and try again', 'warning')
+        blog_app.logger.warning('some data not valid in post [%s]' % title)
     return render_template('blog/edit.html', post_form=post_form, title=title)
 
 
@@ -101,16 +101,18 @@ def post(title):
        else:
            flash('data not valid, fix them and try again', 'warning')
     comments = Comment.get_comments_by_post_id(post.id)
+    blog_app.logger.info('get post with title %s success' % title)
     return render_template('blog/post.html', post=post, comment_form=comment_form, comments=comments)
 
 
 @blog.route('/tag/<tag>', methods=['GET'])
-@blog.route('/tag/<tag>/<page>')
+@blog.route('/tag/<tag>/<int:page>')
 def tag(tag, page=1):
     if isinstance(page, str):
         page = int(page)
     pagination = Post.get_pagination_by_tag(tag=tag, page=page)
     posts = pagination.items
+    blog_app.logger.info('get posts with tag [%s] on page [%s] success' % (tag, page))
     return render_template('blog/tag.html', posts=posts, pagination=pagination, tag=tag)
 
 
@@ -121,6 +123,7 @@ def delete(title):
     subject = post.subject_name
     Post.delete_post_by_title(title)
     flash('Post【' + title + '】 successfully deleted', 'success')
+    blog_app.logger.info('Post [' + title + '] successfully deleted')
     return redirect(request.values.get('next') or url_for('blog.posts', subject=subject))
 
 
@@ -143,5 +146,6 @@ def init():
             'code': -1,
             'message': 'Init administrator failed, message: %s' % e
         }
+        blog_app.logger.error('init app failed, message : ' + e)
     return jsonify(json)
 

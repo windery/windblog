@@ -2,6 +2,7 @@
 # -*- coding:utf8 -*-
 
 import os
+from flask import logging
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 
@@ -15,6 +16,7 @@ class Config:
     WINDBLOG_UPLOAD_FOLDER = os.getenv('WINDBLOG_UPLOAD_FOLDER') or 'upload_files'
     WINDBLOG_DOWNLOAD_PROXY_FOLDER = os.getenv('WINDBLOG_DOWNLOAD_PROXY_FOLDER') or 'download_proxy_files'
     WINDBLOG_MAX_FILE_LENGTH = os.getenv('WINDBLOG_MAX_FILE_LENGTH') or 100
+    LOG_LEVEL = logging.DEBUG
 
     SUBJECTS = [
         ('technique', '技术'),

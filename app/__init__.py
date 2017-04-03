@@ -37,7 +37,7 @@ def create_app(config_name):
     # logging
     if not os.path.isdir('log'):
         os.mkdir('log')
-    file_handler = RotatingFileHandler('log/windblog.log', maxBytes=1024*1024, backupCount=10)
+    file_handler = RotatingFileHandler('log/windblog.log', maxBytes=1024*1024*10, backupCount=10)
     file_handler.setLevel(logging.DEBUG)
     str_format = '[%(asctime)s] p%(process)s [%(name)s:%(lineno)d] %(levelname)s - %(message)s'
     time_format = '%m-%d %H:%M:%S'
