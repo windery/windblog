@@ -20,7 +20,6 @@ class Post(db.Model):
     modify_time = db.Column(db.DateTime, default=datetime.utcnow)
     tags = db.Column(db.String(100))
 
-    comment = db.relationship('Comment', backref=db.backref('post'))
     tag = db.relationship('Tag', backref='post')
 
     @classmethod
@@ -109,24 +108,6 @@ class Post(db.Model):
 
     def __repr__(self):
         return '<Post %r>' % self.title
-
-
-class Comment(db.Model):
-    __tablename__ = 'comment'
-    id = db.Column(db.Integer, primary_key=True)
-    post_id = db.Column(db.Integer, db.ForeignKey('post.id'))
-    parent_id = db.Column(db.Integer, db.ForeignKey('comment.id'))
-    username = db.Column(db.String(100))
-    content = db.Column(db.TEXT)
-    comment_time = db.Column(db.DateTime, default=datetime.utcnow)
-    email = db.Column(db.String(255))
-
-    parent = db.relationship('Comment', remote_side=parent_id)
-
-    @classmethod
-    def get_comments_by_post_id(cls, post_id):
-        comments = Comment.query.filter_by(post_id=post_id).all()
-        return comments
 
 
 class Subject(db.Model):
