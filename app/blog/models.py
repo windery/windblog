@@ -16,6 +16,9 @@ class Post(db.Model):
     subject_name = db.Column(db.String(100), db.ForeignKey('subject.name'))
     title = db.Column(db.String(100), unique=True)
     content = db.Column(db.Text)
+    content_md = db.Column(db.Text)
+    brief_content = db.Column(db.String(100))
+    brief_content_md = db.Column(db.Text)
     create_time = db.Column(db.DateTime, default=datetime.utcnow)
     modify_time = db.Column(db.DateTime, default=datetime.utcnow)
     tags = db.Column(db.String(100))
@@ -72,8 +75,18 @@ class Post(db.Model):
         pagination = cls.query.filter(cls.title.in_(post_titles)).order_by(cls.create_time.desc()).paginate(page, per_page=posts_per_page, error_out=False)
         return pagination
 
+    def get_content(self):
+        return self.content
+
+    def get_markdown_content(self):
+        return self.content_md
+
     def get_brief_content(self):
-        return str(self.content)[0:100]
+        return self.brief_content
+
+    def get_brief_markdown_content(self):
+        return self.brief_content_md
+
 
     def get_tag_list(self):
         return self.tags.split(',')
@@ -81,26 +94,6 @@ class Post(db.Model):
     @classmethod
     def clear(cls):
         cls.query.delete()
-        try:
-            db.session.commit()
-        except IntegrityError:
-            db.session.rollback()
-
-    @staticmethod
-    def insert_fake_posts(count=100):
-        from forgery_py import lorem_ipsum, date
-
-        seed()
-        for i in range(count):
-            post = Post()
-            post.subject_name = 'technique'
-            post.title = lorem_ipsum.sentence()[0:99]
-            post.content = lorem_ipsum.paragraph()
-            post.create_time = date.date(past=True)
-            tags = [lorem_ipsum.word() for i in range(3)]
-            post.tags = ','.join(tags)
-            if Post.query.filter_by(title=post.title).first() is None:
-                db.session.add(post)
         try:
             db.session.commit()
         except IntegrityError:

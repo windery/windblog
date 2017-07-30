@@ -41,7 +41,7 @@
     <div class="col-md-12"><p></p></div>
     <div class="col-md-12">
         <div class="well" style="word-wrap: break-word">
-            {{ post.get_brief_content() | markdown }}
+            {{ post.get_brief_markdown_content() | safe }}
         </div>
         <div class="col-md-6">
             <p class="text-left">

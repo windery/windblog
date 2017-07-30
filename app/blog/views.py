@@ -4,6 +4,8 @@ from flask import render_template, url_for, flash, redirect, jsonify, request, c
 from flask_login import login_required
 from sqlalchemy.exc import IntegrityError
 
+import mistune
+
 from app.blog.models import Post, Tag
 from ..utils.log_util import log_request
 from . import blog_blueprint as blog
@@ -58,14 +60,21 @@ def edit(title=None):
         post_form.update = True
         blog_app.logger.info('post[%s] original data is [%s]' % (post.title, post_form.to_json()))
     if post_form.validate_on_submit():
-        blog_app.logger.info('after edit post[%s], current data is [%s]' % (post.title, post_form.to_json()))
+        blog_app.logger.info('after edit post[%s], current data is [%s]' % (title, post_form.to_json()))
         title = post_form.title.data
         tags = post_form.tags.data
         if not post:
+            content = post_form.content.data
+            content_md = mistune.markdown(content)
+            brief_content = content[0:100]
+            brief_content_md = mistune.markdown(brief_content)
             post = Post(
                 title=post_form.title.data,
                 subject_name=post_form.subject.data,
-                content=post_form.content.data,
+                content=content,
+                content_md=content_md,
+                brief_content=brief_content,
+                brief_content_md=brief_content_md,
                 tags=post_form.tags.data,
                 create_time=datetime.utcnow(),
                 modify_time=datetime.utcnow()

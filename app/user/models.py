@@ -35,7 +35,7 @@ class User(db.Model, UserMixin):
         if administrator is None:
             administrator = User()
             administrator.username = 'administrator'
-            admin_password = app.config['BLOG_ADMIN_PASSWORD']
+            admin_password = app.config['WINDBLOG_ADMIN_PASSWORD']
             if admin_password is None:
                 raise AttributeError('Administrator password not set yet.')
             administrator.password = admin_password
