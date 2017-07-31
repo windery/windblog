@@ -15,7 +15,6 @@ manager = Manager(app)
 
 manager.add_command('db', MigrateCommand)
 manager.add_command('runserver', GunicornApp())
-# manager.add_command('runserver', Server(use_debugger=True, use_reloader=False))
 
 if __name__ == '__main__':
    manager.run()
