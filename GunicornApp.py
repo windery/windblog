@@ -15,8 +15,12 @@ class GunicornApp(Command):
 
     def __call__(self, app=None, *args, **kwargs):
 
-        from gunicorn.app.base import Application
-        class FlaskApplication(Application):
+        from gunicorn.app.wsgiapp import WSGIApplication
+
+        class FlaskApplication(WSGIApplication):
+
+            def __init__(self, *args, **kwargs):
+                super(FlaskApplication, self).__init__(*args, **kwargs)
             def init(self, parser, opts, args):
                 return kwargs
 
