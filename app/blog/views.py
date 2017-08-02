@@ -8,6 +8,7 @@ import mistune
 
 from app.blog.models import Post, Tag
 from ..utils.log_util import log_request
+from ..utils import markdown
 from . import blog_blueprint as blog
 from .forms import PostForm
 from .. import db
@@ -65,9 +66,9 @@ def edit(title=None):
         tags = post_form.tags.data
         if not post:
             content = post_form.content.data
-            content_md = mistune.markdown(content)
+            content_md = markdown(content)
             brief_content = content[0:100]
-            brief_content_md = mistune.markdown(brief_content)
+            brief_content_md = markdown(brief_content)
             post = Post(
                 title=post_form.title.data,
                 subject_name=post_form.subject.data,
