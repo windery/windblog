@@ -63,31 +63,35 @@ def edit(title=None):
     if post_form.validate_on_submit():
         blog_app.logger.info('after edit post[%s], current data is [%s]' % (title, post_form.to_json()))
         title = post_form.title.data
+        subject_name = post_form.subject.data
         tags = post_form.tags.data
+        content = post_form.content.data
+        content_md = markdown(content)
+        brief_content = content[0:100]
+        brief_content_md = markdown(brief_content)
         if not post:
-            content = post_form.content.data
-            content_md = markdown(content)
-            brief_content = content[0:100]
-            brief_content_md = markdown(brief_content)
             post = Post(
-                title=post_form.title.data,
-                subject_name=post_form.subject.data,
+                title=title,
+                subject_name=subject_name,
                 content=content,
                 content_md=content_md,
                 brief_content=brief_content,
                 brief_content_md=brief_content_md,
-                tags=post_form.tags.data,
+                tags=tags,
                 create_time=datetime.utcnow(),
                 modify_time=datetime.utcnow()
             )
             db.session.add(post)
             flash('New post 【' + title + '】 successfully published', 'success')
         else:
-            post.title=post_form.title.data
-            post.subject_name=post_form.subject.data
-            post.content=post_form.content.data
-            post.tags=post_form.tags.data
-            post.modify_time=datetime.utcnow()
+            post.title = title
+            post.subject_name = subject_name
+            post.content = post_form.content.data
+            post.content_md = content_md
+            post.brief_content = brief_content
+            post.brief_content_md = brief_content_md
+            post.tags = tags
+            post.modify_time = datetime.utcnow()
             flash('Post【' + title + '】 sucessfully updated', 'success')
         try:
             db.session.commit()
