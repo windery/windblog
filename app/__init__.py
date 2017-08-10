@@ -17,6 +17,7 @@ from config import config
 # flask_bootstrap
 bootstrap = Bootstrap()
 
+
 # flask_sqlalchemy
 db = SQLAlchemy()
 
@@ -67,6 +68,7 @@ def create_app(config_name):
 
     app.logger.info('windblog app created.')
 
+    app.extensions['bootstrap']['cdns']['bootstrap'].fallback.baseurl='//cdn.bootcss.com/bootstrap/3.3.7/'
 
     return app
 
