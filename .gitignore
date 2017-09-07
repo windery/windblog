@@ -11,3 +11,4 @@ app/blog/__pycache__/
 app/user/__pycache__/
 log/
 upload_files
+blog.db
