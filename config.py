@@ -8,7 +8,7 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 
 class Config:
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'pandoo'
-    SQLALCHEMY_DATABASE_URI = os.getenv('WINDBLOG_DB_URI')
+    SQLALCHEMY_DATABASE_URI = os.getenv('WINDBLOG_DB_URI') or 'sqlite:///'+os.path.join(basedir, 'blog.db')
     SQLALCHEMY_COMMIT_ON_TEARDOWN = True
     SQLALCHEMY_TRACK_MODIFICATIONS = True
     WINDBLOG_POSTS_PER_PAGE = os.getenv('WINDBLOG_POSTS_PER_PAGE') or 10
