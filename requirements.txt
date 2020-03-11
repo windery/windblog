@@ -30,7 +30,7 @@ PyMySQL==0.7.11
 pyparsing==2.2.0
 python-dateutil==2.6.1
 python-editor==1.0.3
-requests==2.18.4
+requests==2.20.0
 shadowsocks==2.8.2
 six==1.10.0
 SQLAlchemy==1.2.0b2
